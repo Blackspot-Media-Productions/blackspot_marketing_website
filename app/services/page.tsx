@@ -1,0 +1,11 @@
+import type { Metadata } from "next";
+import { Footer, Header, PageHero, sharedSocial } from "../components/SiteChrome";
+
+export const metadata: Metadata = { title: "Services — Blackspot", description: "Brand, digital marketing, media production and software solutions built around the real business problem.", ...sharedSocial };
+const detail = [
+  ["01", "Branding & Design", "When a business has outgrown how it looks, sounds or presents itself, good design alone isn’t enough.", ["Brand strategy & positioning", "Visual identity & design systems", "Campaign materials", "Company profiles & collateral"]],
+  ["02", "Digital Marketing", "Turn attention into demand with a focused message, useful content and campaigns designed around measurable action.", ["Digital strategy", "Content & social media", "SEO & paid campaigns", "Reporting & optimisation"]],
+  ["03", "Media Production", "Tell the right story with photography and film that feel human, confident and built for the channels where people watch.", ["Creative direction", "Photography & film", "Post-production", "Campaign content"]],
+  ["04", "Software, IT & Workflow", "Remove friction from your business with websites, software and smarter processes that make work simpler.", ["Web design & development", "Custom software", "Workflow automation", "Hosting, support & security"]],
+];
+export default function Services(){return <main><Header/><PageHero title="Connected expertise." accent="Clearer outcomes." intro="We bring brand, media and technology together around what your business actually needs—not around a rigid menu of deliverables."/><section className="detailList shell">{detail.map((d)=><article className="detailRow" key={d[0] as string}><span>{d[0] as string}</span><div><h2>{d[1] as string}</h2><p>{d[2] as string}</p></div><ul>{(d[3] as string[]).map(x=><li key={x}>{x}</li>)}</ul></article>)}</section><section className="miniCta lightSection"><div className="shell"><p className="sectionLabel">Not sure what you need?</p><h2>Start with the problem.<br/><span>We’ll find the right mix.</span></h2><a className="darkCta" href="https://audit.theblackspotgroup.com/?utm_source=website&amp;utm_medium=referral&amp;utm_campaign=brand_audit&amp;utm_content=services_page">Get your free audit ↗</a></div></section><Footer/></main>}
