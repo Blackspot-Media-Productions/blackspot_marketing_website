@@ -41,11 +41,21 @@ export type PostDocument = Omit<Post, "_id" | "createdAt" | "updatedAt" | "publi
   publishedAt?: Date;
 };
 
+export type AccessRole = "super_admin" | "member";
+export type MemberPermission = "content.write" | "content.publish" | "content.delete";
+export type UserStatus = "pending" | "active" | "revoked";
+
 export type UserDocument = {
   email: string;
-  passwordHash: string;
+  passwordHash?: string;
   name: string;
   position?: string;
+  role?: AccessRole;
+  permissions?: MemberPermission[];
+  status?: UserStatus;
+  inviteTokenHash?: string;
+  inviteExpiresAt?: Date;
+  invitedBy?: string;
   createdAt: Date;
   updatedAt?: Date;
 };
@@ -55,6 +65,19 @@ export type AdminSession = {
   email: string;
   name: string;
   position?: string;
+  role: AccessRole;
+  permissions: MemberPermission[];
+};
+
+export type TeamMember = {
+  _id: string;
+  email: string;
+  name: string;
+  position?: string;
+  role: AccessRole;
+  permissions: MemberPermission[];
+  status: UserStatus;
+  createdAt: string;
 };
 
 export type Project = {

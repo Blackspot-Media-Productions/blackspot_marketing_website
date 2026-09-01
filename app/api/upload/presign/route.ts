@@ -1,10 +1,13 @@
 import { NextResponse } from "next/server";
-import { requireAdminApi } from "../../../lib/auth";
+import { hasPermission, requireAdminApi } from "../../../lib/auth";
 import { isAllowedUpload, presignUpload, uploadKey } from "../../../lib/r2";
 
 export async function POST(request: Request) {
   const session = await requireAdminApi();
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!hasPermission(session, "content.write")) {
+    return NextResponse.json({ error: "You do not have permission to upload media" }, { status: 403 });
+  }
 
   const body = await request.json().catch(() => null);
   const filename = typeof body?.filename === "string" ? body.filename : "";

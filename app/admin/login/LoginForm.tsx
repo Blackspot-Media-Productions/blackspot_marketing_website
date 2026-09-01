@@ -6,6 +6,7 @@ import { useToast } from "../components/ToastProvider";
 function loginFailureMessage(status: number, data: { error?: string } | null) {
   if (typeof data?.error === "string" && data.error.trim()) return data.error;
   if (status === 401) return "Invalid email or password";
+  if (status === 403) return "This account cannot sign in yet";
   if (status === 400) return "Email and password are required";
   if (status >= 500) return "Sign in is temporarily unavailable. Please try again.";
   return "Could not sign in. Please try again.";

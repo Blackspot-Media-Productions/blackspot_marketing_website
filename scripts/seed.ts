@@ -39,6 +39,7 @@ async function main() {
   const posts = db.collection<PostDocument>("posts");
 
   await users.createIndex({ email: 1 }, { unique: true });
+  await users.createIndex({ inviteTokenHash: 1 }, { sparse: true });
   await posts.createIndex({ slug: 1 }, { unique: true });
   await posts.createIndex({ kind: 1, status: 1 });
 
@@ -49,11 +50,18 @@ async function main() {
       passwordHash: await hash(password, 12),
       name: "Blackspot Owner",
       position: "Owner",
+      role: "super_admin",
+      permissions: [],
+      status: "active",
       createdAt: new Date(),
     });
-    console.log(`Created admin user ${email}`);
+    console.log(`Created super admin ${email}`);
   } else {
-    console.log(`Admin user ${email} already exists`);
+    await users.updateOne(
+      { _id: existingUser._id },
+      { $set: { role: "super_admin", status: "active", updatedAt: new Date() } },
+    );
+    console.log(`Ensured super admin access for ${email}`);
   }
 
   let created = 0;

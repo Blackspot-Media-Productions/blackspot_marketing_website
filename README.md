@@ -42,7 +42,7 @@ npm run seed
 
 This creates the admin user if it does not exist, adds unique indexes, and inserts the current public blog and proof-of-work records. Existing slugs are left unchanged.
 
-Sign in at `/admin/login`.
+Sign in at `/admin/login`. Super admins can invite more people from **Team** in the CMS sidebar, choose their rights, and copy a setup link. Existing users without a role are treated as super admins so the first account is not locked out. Re-running seed promotes `ADMIN_EMAIL` to super admin without changing the password.
 
 ## Content and media
 

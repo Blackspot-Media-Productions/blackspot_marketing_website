@@ -7,7 +7,7 @@ import { useToast } from "../components/ToastProvider";
 
 export function ProfileForm({ initial }: { initial: AdminSession }) {
   return (
-    <AdminShell active="profile">
+    <AdminShell active="profile" initialUser={initial}>
       <ProfileFields initial={initial} />
     </AdminShell>
   );

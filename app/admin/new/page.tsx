@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
-import { requireAdmin } from "../../lib/auth";
+import { requirePermission } from "../../lib/auth";
+import { hasPermission } from "../../lib/access";
 import { getPostById } from "../../lib/posts";
 import { PostEditor } from "./PostEditor";
 
@@ -17,9 +18,16 @@ export default async function NewPost({
 }: {
   searchParams: Promise<{ id?: string; type?: string }>;
 }) {
-  await requireAdmin();
+  const session = await requirePermission("content.write");
   const params = await searchParams;
   const initial = params.id ? await getPostById(params.id) : null;
   if (params.id && !initial) redirect("/admin");
-  return <PostEditor initial={initial} defaultKind={params.type === "blog" ? "blog" : "proof"} />;
+  return (
+    <PostEditor
+      initial={initial}
+      defaultKind={params.type === "blog" ? "blog" : "proof"}
+      canPublish={hasPermission(session, "content.publish")}
+      canDelete={hasPermission(session, "content.delete")}
+    />
+  );
 }

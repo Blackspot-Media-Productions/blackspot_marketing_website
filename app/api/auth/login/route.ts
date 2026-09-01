@@ -15,7 +15,14 @@ export async function POST(request: Request) {
 
     const users = await usersCollection();
     const user = await users.findOne({ email });
-    if (!user || !(await compare(password, user.passwordHash))) {
+    if (!user?.passwordHash || !(await compare(password, user.passwordHash))) {
+      return NextResponse.json({ error: "Invalid email or password" }, { status: 401 });
+    }
+    const status = user.status === "pending" || user.status === "revoked" ? user.status : "active";
+    if (status === "pending") {
+      return NextResponse.json({ error: "Accept your invite link to finish setting up your account" }, { status: 403 });
+    }
+    if (status === "revoked") {
       return NextResponse.json({ error: "Invalid email or password" }, { status: 401 });
     }
 

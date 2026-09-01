@@ -3,7 +3,7 @@ import { SESSION_COOKIE, verifySession } from "./app/lib/session";
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  if (!pathname.startsWith("/admin") || pathname === "/admin/login") {
+  if (!pathname.startsWith("/admin") || pathname === "/admin/login" || pathname.startsWith("/admin/invite/")) {
     return NextResponse.next();
   }
 

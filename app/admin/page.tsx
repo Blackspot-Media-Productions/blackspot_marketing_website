@@ -11,6 +11,6 @@ export const metadata: Metadata = {
 };
 
 export default async function Admin() {
-  await requireAdmin();
-  return <AdminDashboard />;
+  const session = await requireAdmin();
+  return <AdminDashboard initialUser={session} />;
 }

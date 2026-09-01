@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { isSuperAdmin } from "../../lib/access";
 import type { AdminSession } from "../../lib/types";
 
 type AdminUserContextValue = {
@@ -28,12 +29,14 @@ function initials(name: string) {
 
 export function AdminShell({
   active,
+  initialUser,
   children,
 }: {
-  active: "content" | "profile";
+  active: "content" | "profile" | "team";
+  initialUser?: AdminSession | null;
   children: ReactNode;
 }) {
-  const [user, setUser] = useState<AdminSession | null>(null);
+  const [user, setUser] = useState<AdminSession | null>(initialUser || null);
 
   useEffect(() => {
     let ignore = false;
@@ -61,6 +64,9 @@ export function AdminShell({
           <a href="/admin" className="adminLogo"><img src="/blackspot-logo.png" alt="Blackspot" /></a>
           <nav>
             <a className={active === "content" ? "active" : undefined} href="/admin">Content</a>
+            {isSuperAdmin(user) ? (
+              <a className={active === "team" ? "active" : undefined} href="/admin/team">Team</a>
+            ) : null}
             <a className={active === "profile" ? "active" : undefined} href="/admin/profile">Profile</a>
             <a href="/work">View website</a>
           </nav>

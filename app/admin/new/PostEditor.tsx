@@ -75,7 +75,17 @@ function payloadFromState(state: EditorState, status: Post["status"]) {
   };
 }
 
-export function PostEditor({ initial, defaultKind }: { initial: Post | null; defaultKind: PostKind }) {
+export function PostEditor({
+  initial,
+  defaultKind,
+  canPublish,
+  canDelete,
+}: {
+  initial: Post | null;
+  defaultKind: PostKind;
+  canPublish: boolean;
+  canDelete: boolean;
+}) {
   const router = useRouter();
   const toast = useToast();
   const [state, setState] = useState<EditorState>(() => fromPost(initial, defaultKind));
@@ -174,7 +184,7 @@ export function PostEditor({ initial, defaultKind }: { initial: Post | null; def
       <header className="editorBar">
         <a href="/admin">← Content</a>
         <div>
-          {postId ? (
+          {postId && canDelete ? (
             <button
               className="deleteBarBtn"
               onClick={() => setConfirmingDelete(true)}
@@ -188,9 +198,11 @@ export function PostEditor({ initial, defaultKind }: { initial: Post | null; def
           <button onClick={() => void save("draft")} disabled={Boolean(saving) || deleting} type="button">
             {saving === "draft" ? "Saving…" : "Save draft"}
           </button>
-          <button className="publishBtn" onClick={() => void save("published")} disabled={Boolean(saving) || deleting} type="button">
-            {saving === "published" ? "Publishing…" : "Publish"}
-          </button>
+          {canPublish ? (
+            <button className="publishBtn" onClick={() => void save("published")} disabled={Boolean(saving) || deleting} type="button">
+              {saving === "published" ? "Publishing…" : "Publish"}
+            </button>
+          ) : null}
         </div>
       </header>
       <main className="editorMain">
@@ -350,7 +362,7 @@ export function PostEditor({ initial, defaultKind }: { initial: Post | null; def
           </div>
         </section>
       </main>
-      {confirmingDelete && (
+      {confirmingDelete && canDelete && (
         <ConfirmDelete
           title={state.title}
           deleting={deleting}

@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
 import { NextResponse } from "next/server";
-import { requireAdminApi } from "../../../lib/auth";
+import { hasPermission, requireAdminApi } from "../../../lib/auth";
 import { getPostById, getPostBySlug, postFromInput, serializePost } from "../../../lib/posts";
 import { postsCollection } from "../../../lib/mongo";
 import { revalidateContent } from "../../../lib/revalidate";
@@ -20,12 +20,18 @@ export async function GET(_request: Request, context: RouteContext) {
 export async function PATCH(request: Request, context: RouteContext) {
   const session = await requireAdminApi();
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!hasPermission(session, "content.write")) {
+    return NextResponse.json({ error: "You do not have permission to edit content" }, { status: 403 });
+  }
   const { id } = await context.params;
   const existing = await getPostById(id);
   if (!existing) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
   const parsed = parsePostPayload(await request.json().catch(() => null));
   if ("error" in parsed) return NextResponse.json(parsed, { status: 400 });
+  if (parsed.status === "published" && existing.status !== "published" && !hasPermission(session, "content.publish")) {
+    return NextResponse.json({ error: "You do not have permission to publish" }, { status: 403 });
+  }
 
   const slugOwner = await getPostBySlug(parsed.slug);
   if (slugOwner && slugOwner._id !== existing._id) {
@@ -47,6 +53,9 @@ export async function PATCH(request: Request, context: RouteContext) {
 export async function DELETE(_request: Request, context: RouteContext) {
   const session = await requireAdminApi();
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!hasPermission(session, "content.delete")) {
+    return NextResponse.json({ error: "You do not have permission to delete content" }, { status: 403 });
+  }
   const { id } = await context.params;
   const existing = await getPostById(id);
   if (!existing) return NextResponse.json({ error: "Not found" }, { status: 404 });

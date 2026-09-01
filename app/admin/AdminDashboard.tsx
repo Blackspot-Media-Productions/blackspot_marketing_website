@@ -1,9 +1,10 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import type { Post } from "../lib/types";
+import { hasPermission } from "../lib/access";
+import type { AdminSession, Post } from "../lib/types";
 import { formatDisplayDate } from "../lib/format";
-import { AdminShell } from "./components/AdminShell";
+import { AdminShell, useAdminUser } from "./components/AdminShell";
 import { ConfirmDelete } from "./components/ConfirmDelete";
 import { DeleteIcon } from "./components/DeleteIcon";
 import { useToast } from "./components/ToastProvider";
@@ -16,8 +17,19 @@ function kindLabel(post: Post) {
   return `Proof of work · ${format}`;
 }
 
-export function AdminDashboard() {
+export function AdminDashboard({ initialUser }: { initialUser: AdminSession }) {
+  return (
+    <AdminShell active="content" initialUser={initialUser}>
+      <DashboardMain />
+    </AdminShell>
+  );
+}
+
+function DashboardMain() {
   const toast = useToast();
+  const { user } = useAdminUser();
+  const canWrite = hasPermission(user, "content.write");
+  const canDelete = hasPermission(user, "content.delete");
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState<Filter>("all");
   const [query, setQuery] = useState("");
@@ -81,14 +93,14 @@ export function AdminDashboard() {
   }
 
   return (
-    <AdminShell active="content">
+    <>
       <main className="adminMain">
         <header>
           <div>
             <p>Blackspot CMS</p>
             <h1>Content</h1>
           </div>
-          <button onClick={() => setOpen(true)} type="button">＋ Create post</button>
+          {canWrite ? <button onClick={() => setOpen(true)} type="button">＋ Create post</button> : null}
         </header>
         <section className="adminStats">
           <article><span>Published</span><b>{loading ? "—" : stats.published}</b></article>
@@ -130,15 +142,17 @@ export function AdminDashboard() {
                 <span className={`status ${post.status}`}>{post.status}</span>
                 <span>{formatDisplayDate(post.updatedAt)}</span>
                 <div className="tableActions">
-                  <a href={`/admin/new?id=${post._id}`}>Edit ↗</a>
-                  <button
-                    type="button"
-                    className="deleteIconBtn"
-                    aria-label={`Delete ${post.title || "untitled post"}`}
-                    onClick={() => setPendingDelete(post)}
-                  >
-                    <DeleteIcon />
-                  </button>
+                  {canWrite ? <a href={`/admin/new?id=${post._id}`}>Edit ↗</a> : null}
+                  {canDelete ? (
+                    <button
+                      type="button"
+                      className="deleteIconBtn"
+                      aria-label={`Delete ${post.title || "untitled post"}`}
+                      onClick={() => setPendingDelete(post)}
+                    >
+                      <DeleteIcon />
+                    </button>
+                  ) : null}
                 </div>
               </div>
             ))}
@@ -176,6 +190,6 @@ export function AdminDashboard() {
           </div>
         </div>
       )}
-    </AdminShell>
+    </>
   );
 }

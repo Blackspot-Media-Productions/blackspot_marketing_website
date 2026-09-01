@@ -32,6 +32,12 @@ export async function verifySession(token: string): Promise<AdminSession | null>
       email: payload.email,
       name: payload.name,
       position: typeof payload.position === "string" ? payload.position : "",
+      role: payload.role === "member" ? "member" : "super_admin",
+      permissions: Array.isArray(payload.permissions)
+        ? payload.permissions.filter((item): item is AdminSession["permissions"][number] =>
+            item === "content.write" || item === "content.publish" || item === "content.delete",
+          )
+        : [],
     };
   } catch {
     return null;
