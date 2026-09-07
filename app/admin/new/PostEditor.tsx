@@ -148,7 +148,8 @@ export function PostEditor({
     if (!files?.length) return;
     try {
       for (const file of Array.from(files)) {
-        const url = await uploadMedia(file, setUploadLabel);
+        let url = await uploadMedia(file, setUploadLabel);
+        url = "https://" + url;
         if (target === "cover") update("cover", url);
         if (target === "video") update("video", url);
         if (target === "images") {
