@@ -18,7 +18,7 @@ export async function Header() {
       <div className="navLinks">
         <a href="/services">Services</a>
         <div className="nav-dropdown">
-          <span style={{ cursor: "pointer" }}>Products</span>
+          <span style={{ cursor: "pointer" }}>Products {country}</span>
           <div>
             <a href="https://blackspotmedia.co.uk">Media Production</a>
             <a href="https://usefirstday.com" target="_blank" referrerPolicy="no-referrer">First Day</a>
