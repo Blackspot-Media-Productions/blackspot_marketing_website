@@ -5,6 +5,7 @@ import { getPostById, getPostBySlug, postFromInput, serializePost } from "../../
 import { postsCollection } from "../../../lib/mongo";
 import { revalidateContent } from "../../../lib/revalidate";
 import { parsePostPayload } from "../../../lib/validate-post";
+import { log } from "node:console";
 
 type RouteContext = { params: Promise<{ id: string }> };
 

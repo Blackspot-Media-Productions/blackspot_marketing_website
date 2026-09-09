@@ -1,4 +1,4 @@
-import type { PostInput, PostKind, PostStatus, ProjectType } from "./types";
+import type { Post, PostInput, PostKind, PostStatus, ProjectType } from "./types";
 import { slugify } from "./format";
 
 const KINDS = new Set<PostKind>(["blog", "proof"]);
@@ -33,6 +33,8 @@ export function parsePostPayload(body: unknown): { error: string } | PostInput {
   const type = asString(data.type) as ProjectType;
   if (kind === "proof" && type && !TYPES.has(type)) return { error: "Invalid presentation format" };
 
+  if (!data.localeFor || (data.localeFor && !(data.localeFor as Post['localeFor'])?.some((l) => ['GB', 'ZA', 'global'].includes(l !== 'global' ? l.toUpperCase() : l)))) return { error: "Invalid locale selected" };
+
   return {
     kind,
     status,
@@ -54,5 +56,6 @@ export function parsePostPayload(body: unknown): { error: string } | PostInput {
     challenge: asString(data.challenge) || undefined,
     solution: asString(data.solution) || undefined,
     outcome: asString(data.outcome) || undefined,
+    localeFor: (asStringArray(data.localeFor) || ['global']) as Post['localeFor'],
   };
 }

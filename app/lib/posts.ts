@@ -30,6 +30,7 @@ export function serializePost(doc: WithId<PostDocument>): Post {
     createdAt: doc.createdAt.toISOString(),
     updatedAt: doc.updatedAt.toISOString(),
     publishedAt: doc.publishedAt?.toISOString(),
+    localeFor: doc.localeFor,
   };
 }
 
@@ -170,6 +171,7 @@ export function postFromInput(input: PostInput, existing?: Post): PostDocument {
     challenge: input.challenge,
     solution: input.solution,
     outcome: input.outcome,
+    localeFor: input.localeFor,
     createdAt: existing ? new Date(existing.createdAt) : now,
     updatedAt: now,
     publishedAt: publishing

@@ -22,6 +22,7 @@ export default async function NewPost({
   const params = await searchParams;
   const initial = params.id ? await getPostById(params.id) : null;
   if (params.id && !initial) redirect("/admin");
+
   return (
     <PostEditor
       initial={initial}

@@ -375,7 +375,7 @@ export function PostEditor({
                         }
 
                         update('localeFor', [...oldValues, 'GB']);
-                      }
+                      } else { update('localeFor', state.localeFor.filter((l) => l !== 'GB')) }
                     }} />
                   <label htmlFor="gb">UK</label>
                 </div>
@@ -389,7 +389,7 @@ export function PostEditor({
                         }
 
                         update('localeFor', [...oldValues, 'ZA']);
-                      }
+                      } else { update('localeFor', state.localeFor.filter((l) => l !== 'ZA')) }
                     }}
                   />
                   <label htmlFor="za">South Africa</label>
