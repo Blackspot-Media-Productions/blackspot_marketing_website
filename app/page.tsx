@@ -3,6 +3,7 @@ import { HowWeWork } from "./components/HowWeWork";
 import { PageLoader } from "./components/PageLoader";
 import { auditLink, Footer, Header } from "./components/SiteChrome";
 import { getProjects } from "./lib/content";
+import { getDomain } from "./utils";
 
 export const revalidate = 60;
 
@@ -35,6 +36,21 @@ const services = [
 
 export default async function Home() {
   const featured = (await getProjects()).slice(0, 3);
+  const { host } = await getDomain();
+
+  const filterProjects = featured.filter((p) => {
+    const isUkDomain = host?.includes('.co.uk');
+    const isSaDomain = host?.includes('.co.za');
+
+    if ((!isUkDomain && !isSaDomain) || !p.localeFor || p.localeFor.includes('global')) {
+      return true;
+    }
+
+    return (
+      (isUkDomain && p.localeFor.includes('GB')) ||
+      (isSaDomain && p.localeFor.includes('ZA'))
+    );
+  });
 
   return (
     <>
@@ -146,13 +162,13 @@ export default async function Home() {
             </div>
             <a href="/work">View our work ↗</a>
           </div>
-          {featured.length === 0 ? (
+          {filterProjects.length === 0 ? (
             <p className="emptyPublic" data-reveal>
               Published client work will appear here.
             </p>
           ) : (
             <div className="caseGrid" data-lenis-prevent>
-              {featured.map((p, i) => (
+              {filterProjects.map((p, i) => (
                 <article
                   className="case caseProject"
                   data-reveal
