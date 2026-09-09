@@ -1,11 +1,11 @@
 import React from "react";
-import { getCountry, getDomain } from "../utils";
+import { getMediaProdLink, getDomain } from "../utils";
 
 export const auditLink = (placement: string) =>
   `https://audit.theblackspotgroup.com/?utm_source=website&utm_medium=referral&utm_campaign=brand_audit&utm_content=${placement}`;
 
 export async function Header() {
-  const country = await getCountry();
+  const mediaProdLink = await getMediaProdLink();
 
   return (
     <nav className="nav shell" aria-label="Main navigation">
@@ -18,9 +18,9 @@ export async function Header() {
       <div className="navLinks">
         <a href="/services">Services</a>
         <div className="nav-dropdown">
-          <span style={{ cursor: "pointer" }}>Products {country}</span>
+          <span style={{ cursor: "pointer" }}>Products</span>
           <div>
-            <a href="https://blackspotmedia.co.uk">Media Production</a>
+            <a href={mediaProdLink}>Media Production</a>
             <a href="https://usefirstday.com" target="_blank" referrerPolicy="no-referrer">First Day</a>
           </div>
         </div>
