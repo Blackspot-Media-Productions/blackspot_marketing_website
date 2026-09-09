@@ -49,6 +49,7 @@ export function toProject(post: Post): Project {
     solution: post.solution,
     outcome: post.outcome,
     services: post.services || [],
+    localeFor: post.localeFor || ['global']
   };
 }
 

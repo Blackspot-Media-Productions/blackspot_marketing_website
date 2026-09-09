@@ -27,6 +27,7 @@ type EditorState = {
   cover: string;
   seoTitle: string;
   seoDescription: string;
+  localeFor: ('global' | 'ZA' | 'GB')[];
   category: string;
   body: string;
   read: string;
@@ -63,6 +64,7 @@ function fromPost(post: Post | null, defaultKind: PostKind): EditorState {
     challenge: post?.challenge || "",
     solution: post?.solution || "",
     outcome: post?.outcome || "",
+    localeFor: post?.localeFor || ["global"],
   };
 }
 
@@ -360,6 +362,50 @@ export function PostEditor({
           <div>
             <div className="field"><span>SEO title</span><input value={state.seoTitle} onChange={(event) => update("seoTitle", event.target.value)} /></div>
             <div className="field"><span>SEO description</span><textarea rows={3} value={state.seoDescription} onChange={(event) => update("seoDescription", event.target.value)} /></div>
+            <div className="field">
+              <span>Choose where this post will be available</span>
+              <div className="checkbox">
+                <div>
+                  <input type="checkbox" name="localeFor" id="gb" checked={state.localeFor.includes('GB')}
+                    onChange={() => {
+                      if (!state.localeFor.includes('GB')) {
+                        let oldValues = state.localeFor;
+                        if (state.localeFor.includes('global')) {
+                          oldValues = [];
+                        }
+
+                        update('localeFor', [...oldValues, 'GB']);
+                      }
+                    }} />
+                  <label htmlFor="gb">UK</label>
+                </div>
+                <div>
+                  <input type="checkbox" name="localeFor" id="za" checked={state.localeFor.includes('ZA')}
+                    onChange={() => {
+                      if (!state.localeFor.includes('ZA')) {
+                        let oldValues = state.localeFor;
+                        if (state.localeFor.includes('global')) {
+                          oldValues = [];
+                        }
+
+                        update('localeFor', [...oldValues, 'ZA']);
+                      }
+                    }}
+                  />
+                  <label htmlFor="za">South Africa</label>
+                </div>
+                <div>
+                  <input type="checkbox" name="localeFor" id="global" checked={state.localeFor.includes('global')}
+                  onChange={() => {
+                    if (!state.localeFor.includes('global')) {
+                      update('localeFor', ['global']);
+                    }
+                  }}
+                  />
+                  <label htmlFor="global">Global</label>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
       </main>

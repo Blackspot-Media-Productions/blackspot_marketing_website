@@ -12,6 +12,7 @@ export type Post = {
   cover: string;
   seoTitle?: string;
   seoDescription?: string;
+  localeFor?: ('GB' | 'ZA' | 'global')[];
   category?: string;
   body?: string;
   read?: string;
@@ -95,6 +96,7 @@ export type Project = {
   solution?: string;
   outcome?: string;
   services: string[];
+  localeFor?: Post['localeFor'];
 };
 
 export type BlogPost = {

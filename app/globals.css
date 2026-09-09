@@ -2203,6 +2203,23 @@ h1 em {
   grid-template-columns: 1fr 1fr;
   gap: 15px;
 }
+.field > .checkbox {
+  display: flex;
+  column-gap: 12px;
+}
+.field > .checkbox div {
+  display: flex;
+  align-items: center;
+}
+.field > .checkbox label {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: #777;
+  margin-top: 2px;
+}
+.field > .checkbox input[type=checkbox] {
+  accent-color: var(--orange);
+}
 .uploadDemo {
   min-height: 220px;
   border: 1px dashed #aaa;

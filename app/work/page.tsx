@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Footer, Header, PageHero, sharedSocial } from "../components/SiteChrome";
 import { getProjects } from "../lib/content";
+import { getDomain } from "../utils";
 
 export const metadata: Metadata = {
   title: "Proof of Work — Blackspot",
@@ -12,6 +13,21 @@ export const revalidate = 60;
 
 export default async function Work() {
   const projects = await getProjects();
+  const { host } = await getDomain();
+
+  const filterProjects = projects.filter((p) => {
+    const isUkDomain = host?.includes('.co.uk');
+    const isSaDomain = host?.includes('.co.za');
+
+    if ((!isUkDomain && !isSaDomain) || !p.localeFor || p.localeFor.includes('global')) {
+      return true;
+    }
+
+    return (
+      (isUkDomain && p.localeFor.includes('GB')) ||
+      (isSaDomain && p.localeFor.includes('ZA'))
+    );
+  });
   return (
     <main>
       <Header />
@@ -30,7 +46,7 @@ export default async function Work() {
         </div>
         {projects.length === 0 ? <p className="emptyPublic">Work will appear here once it is published.</p> : null}
         <div className="projectGrid">
-          {projects.map((p, i) => (
+          {filterProjects.map((p, i) => (
             <a className={`projectCard projectCard${i + 1}`} href={`/work/${p.slug}`} key={p.slug} data-reveal>
               <div className="projectImage">
                 <img src={p.cover} alt={p.title} />
