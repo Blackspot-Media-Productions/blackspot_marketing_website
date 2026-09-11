@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Footer, Header } from "../../components/SiteChrome";
 import { getProject } from "../../lib/content";
+import { categoryMap } from "../../lib/data";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
@@ -17,6 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function ProjectPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const p = await getProject(slug);
+
   if (!p) {
     return (
       <main>
@@ -28,7 +32,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
         <Footer />
       </main>
     );
-  }
+  };
 
   return (
     <main>
@@ -36,7 +40,8 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       <article className={`projectDetail ${p.type}`}>
         <header className="projectDetailHead shell">
           <div>
-            <p className="articleMeta">{p.category} · {p.year}</p>
+            <Link href="/work" style={{marginBottom: 12, display: 'block'}}><p className="articleMeta">← Go back</p></Link>
+            <p className="articleMeta">{categoryMap[p.category as keyof typeof categoryMap]?.second ?? p.category} · {p.year}</p>
             <h1>{p.title}</h1>
           </div>
           <div>

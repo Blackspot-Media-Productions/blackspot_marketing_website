@@ -10,6 +10,8 @@ import { ConfirmDelete } from "../components/ConfirmDelete";
 import { DeleteIcon } from "../components/DeleteIcon";
 import { useToast } from "../components/ToastProvider";
 import { BodyEditor } from "./BodyEditor";
+import { SelectInput } from "../../components/SelectInput";
+import { projectCategories } from "../../lib/data";
 
 const proofTypes: { id: ProjectType; name: string; copy: string }[] = [
   { id: "image", name: "Single image", copy: "One strong visual with context" },
@@ -262,8 +264,9 @@ export function PostEditor({
             {state.kind === "proof" && (
               <div className="fieldSplit">
                 <div className="field">
-                  <span>Category</span>
-                  <input value={state.category} onChange={(event) => update("category", event.target.value)} />
+                  {/*<span>Category</span>
+                  <input value={state.category} onChange={(event) => update("category", event.target.value)} />*/}
+                  <SelectInput list={projectCategories} label="Category" value={state.category} onChangeAction={(value) => update("category", value)} />
                 </div>
                 <div className="field">
                   <span>Year</span>
@@ -342,9 +345,9 @@ export function PostEditor({
             <div>
               {state.kind === "proof" && state.type === "case-study" && (
                 <>
-                  <div className="field"><span>Challenge</span><textarea rows={4} value={state.challenge} onChange={(event) => update("challenge", event.target.value)} /></div>
-                  <div className="field"><span>Solution</span><textarea rows={4} value={state.solution} onChange={(event) => update("solution", event.target.value)} /></div>
-                  <div className="field"><span>Outcome</span><textarea rows={4} value={state.outcome} onChange={(event) => update("outcome", event.target.value)} /></div>
+                  <div className="field"><span>Challenge</span><BodyEditor placeholder="Start Typing..." onChange={(html) => update('challenge', html)} value={state.challenge} /></div>
+                  <div className="field"><span>Solution</span><BodyEditor placeholder="Start Typing..." onChange={(html) => update('solution', html)} value={state.solution} /></div>
+                  <div className="field"><span>Outcome</span><BodyEditor placeholder="Start Typing..." onChange={(html) => update('outcome', html)} value={state.outcome} /></div>
                 </>
               )}
               {state.kind === "blog" && (

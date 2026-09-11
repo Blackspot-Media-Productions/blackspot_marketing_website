@@ -3,6 +3,8 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Placeholder } from "@tiptap/extension-placeholder";
+import Link from "@tiptap/extension-link";
+import { useEffect, useState } from "react";
 
 function ToolbarButton({
   label,
@@ -14,12 +16,12 @@ function ToolbarButton({
   active?: boolean;
   disabled?: boolean;
   onClick: () => void;
-}) {
+  }) {
   return (
     <button
       type="button"
       className={active ? "active" : undefined}
-      disabled={disabled}
+      disabled={disabled || false}
       onClick={onClick}
     >
       {label}
@@ -27,7 +29,9 @@ function ToolbarButton({
   );
 }
 
-export function BodyEditor({ value, onChange }: { value: string; onChange: (html: string) => void }) {
+export function BodyEditor({ value, onChange, placeholder }: { placeholder?: string; value: string; onChange: (html: string) => void }) {
+  const [isMounted, setIsMounted] = useState(false);
+
   const editor = useEditor({
     immediatelyRender: false,
     shouldRerenderOnTransaction: true,
@@ -36,18 +40,28 @@ export function BodyEditor({ value, onChange }: { value: string; onChange: (html
         heading: { levels: [2, 3] },
         code: false,
         codeBlock: false,
-        link: {
-          openOnClick: false,
-          autolink: true,
-          defaultProtocol: "https",
-          HTMLAttributes: {
-            rel: "noopener noreferrer",
-            target: "_blank",
-          },
-        },
+        link: false,
+        // link: {
+        //   openOnClick: false,
+        //   autolink: true,
+        //   defaultProtocol: "https",
+        //   HTMLAttributes: {
+        //     rel: "noopener noreferrer",
+        //     target: "_blank",
+        //   },
+        // },
+      }),
+      Link.configure({
+        openOnClick: false,
+        autolink: true,
+        defaultProtocol: "https",
+        HTMLAttributes: {
+          rel: "noopener noreferrer",
+          target: "_blank",
+        }
       }),
       Placeholder.configure({
-        placeholder: "Write the article…",
+        placeholder: placeholder ?? "Write the article…",
       }),
     ],
     content: value || "",
@@ -66,6 +80,14 @@ export function BodyEditor({ value, onChange }: { value: string; onChange: (html
       return;
     }
     editor.chain().focus().extendMarkRange("link").setLink({ href: url.trim() }).run();
+  }
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return null;
   }
 
   return (

@@ -1328,13 +1328,16 @@ h1 em {
   flex-wrap: wrap;
   margin-bottom: 65px;
 }
-.workFilters button {
+.workFilters button, .workFilters a {
   background: none;
   color: #888;
   border: 1px solid #303030;
   border-radius: 99px;
   padding: 10px 15px;
   font-family: inherit;
+}
+.workFilters a {
+  text-decoration: none;
 }
 .workFilters .active {
   background: #fff;
@@ -3001,4 +3004,70 @@ html.loader-skip .pageLoader {
   .pageLoader {
     display: none !important;
   }
+}
+
+.custom-select-input {
+  position: relative;
+}
+
+.custom-select-input p {
+  font-size: 16px;
+  margin: 0;
+}
+
+.custom-select-input #input-label {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.input-toggler {
+  width: 100%;
+  border: 1px solid #d4d4d4;
+  background: #fff;
+  border-radius: 8px;
+  padding: 12px 13px;
+  font: inherit;
+  resize: vertical;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.input-toggler p.input-placeholder {
+  color: var(--grey);
+}
+
+.input-dropdown-items-container {
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 8px;
+  margin-top: 4px;
+  padding: 4px;
+  box-shadow: 0 4px 8px var(--paper);
+}
+
+.input-dropdown-items-container button {
+  background-color: transparent;
+  border: none;
+  font: inherit;
+  outline: none;
+  text-align: left;
+  padding: 8px;
+  border-radius: 6px;
+  color: var(--grey);
+}
+
+.input-dropdown-items-container button:hover {
+  background-color: var(--paper);
+  color: var(--black);
+}
+
+.input-dropdown-items-container button.active {
+  color: var(--black);
+  background-color: var(--paper);
+}
+
+.input-dropdown-items-container:has(button:not(.active):hover) button.active {
+  background-color: transparent;
 }
