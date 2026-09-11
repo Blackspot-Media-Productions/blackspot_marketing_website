@@ -45,7 +45,8 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
             <h1>{p.title}</h1>
           </div>
           <div>
-            <p>{p.summary}</p>
+            {/*<p>{p.summary}</p>*/}
+            <p dangerouslySetInnerHTML={{__html: p.summary}} />
             <dl>
               <div><dt>Client</dt><dd>{p.client}</dd></div>
               <div><dt>Services</dt><dd>{p.services.join(" · ")}</dd></div>
@@ -75,7 +76,8 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
                 {[["The challenge", p.challenge], ["Our diagnosis & solution", p.solution], ["The outcome", p.outcome]].map((x) => (
                   <article key={x[0]}>
                     <p className="sectionLabel">{x[0]}</p>
-                    <h2>{x[1]}</h2>
+                    <h2 dangerouslySetInnerHTML={{ __html: x[1] ?? "" }} />
+                    {/*<h2>{x[1]}</h2>*/}
                   </article>
                 ))}
               </div>

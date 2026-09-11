@@ -189,7 +189,8 @@ export default async function Home() {
                           .join(" · ")}
                       </p>
                       <h3>{p.title}</h3>
-                      <span>{p.outcome || p.summary}</span>
+                      <span dangerouslySetInnerHTML={{__html: p.outcome || p.summary}} />
+                      {/*<span dangerouslySetInnerHTML={{__html: p.outcome || p.summary}}>{p.outcome || p.summary}</span>*/}
                       <b>View project ↗</b>
                     </div>
                   </a>
