@@ -5,13 +5,18 @@ import {
   PageHero,
   sharedSocial,
 } from "../components/SiteChrome";
+import { getDomain } from "../utils";
 export const metadata: Metadata = {
   title: "Contact — Blackspot",
   description:
     "Talk to Blackspot about a brand, media or technology challenge.",
   ...sharedSocial,
 };
-export default function Contact() {
+export default async function Contact() {
+  const { host } = await getDomain();
+  const isUkDomain = host?.includes(".co.uk");
+  const isSaDomain = host?.includes(".co.za");
+
   return (
     <main>
       <Header />
@@ -28,30 +33,38 @@ export default function Contact() {
         </a>
         <div>
           <span>Call</span>
-          <a href="tel:+447425068083">
-            <h2>+44 7425 068083</h2>
-          </a>
+          {!isSaDomain && (
+            <a href="tel:+447425068083">
+              <h2>+44 7425 068083</h2>
+            </a>
+          )}
 
-          <a href="tel:+27814278898">
-            <h2 style={{ marginTop: 0 }}>+27 81 427 8898</h2>
-          </a>
+          {!isUkDomain && (
+            <a href="tel:+27814278898">
+              <h2 style={{ marginTop: 0 }}>+27 81 427 8898</h2>
+            </a>
+          )}
         </div>
-        <div>
-          <span>United Kingdom</span>
-          <p>
-            251 Shaw Road, Royton
-            <br />
-            OL2 6EF
-          </p>
-        </div>
-        <div>
-          <span>South Africa</span>
-          <p>
-            Kimberley, Northern Cape
-            <br />
-            8300
-          </p>
-        </div>
+        {!isSaDomain && (
+          <div>
+            {!isUkDomain ? <span>United Kingdom</span> : <span>Office Address</span>}
+            <p>
+              251 Shaw Road, Royton
+              <br />
+              OL2 6EF
+            </p>
+          </div>
+        )}
+        {!isUkDomain && (
+          <div>
+            {!isSaDomain ? <span>South Africa</span> : <span>Office Address</span>}
+            <p>
+              Kimberley, Northern Cape
+              <br />
+              8300
+            </p>
+          </div>
+        )}
       </section>
       <section className="miniCta lightSection">
         <div className="shell">

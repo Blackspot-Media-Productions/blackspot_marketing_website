@@ -406,6 +406,7 @@ h1 em {
   flex-direction: column;
   padding: 28px;
   overflow: hidden;
+  position: relative;
 }
 .case:nth-child(1) {
   grid-column: span 7;
@@ -418,6 +419,17 @@ h1 em {
 .case:nth-child(3) {
   grid-column: 4 / span 7;
   margin-top: 10px;
+}
+.case .featured-indicator {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  z-index: 999;
+  background: var(--orange);
+  padding: 6px 12px 4px;
+  border-radius: 36px;
+  font-size: 13px;
+  color: var(--black);
 }
 .caseOrange {
   background: var(--orange);

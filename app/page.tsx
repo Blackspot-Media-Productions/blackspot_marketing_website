@@ -35,10 +35,10 @@ const services = [
 ];
 
 export default async function Home() {
-  const featured = (await getProjects()).slice(0, 3);
+  const projects = (await getProjects());
   const { host } = await getDomain();
 
-  const filterProjects = featured.filter((p) => {
+  const featuredProjects = projects.filter((p) => {
     const isUkDomain = host?.includes('.co.uk');
     const isSaDomain = host?.includes('.co.za');
 
@@ -50,7 +50,7 @@ export default async function Home() {
       (isUkDomain && p.localeFor.includes('GB')) ||
       (isSaDomain && p.localeFor.includes('ZA'))
     );
-  });
+  }).filter((p) => p.featured);
 
   return (
     <>
@@ -162,19 +162,22 @@ export default async function Home() {
             </div>
             <a href="/work">View our work ↗</a>
           </div>
-          {filterProjects.length === 0 ? (
+          {featuredProjects.length === 0 ? (
             <p className="emptyPublic" data-reveal>
-              Published client work will appear here.
+              {/*Published client work will appear here.*/}
+              Featured client work will appear here.
             </p>
           ) : (
             <div className="caseGrid" data-lenis-prevent>
-              {filterProjects.map((p, i) => (
+              {featuredProjects.map((p, i) => (
                 <article
                   className="case caseProject"
                   data-reveal
                   key={p.slug}
                   style={{ "--reveal-delay": `${i * 90}ms` } as CSSProperties}
                 >
+                  <span className="featured-indicator">Featured</span>
+
                   <a href={`/work/${p.slug}`}>
                     <div className="caseVisual">
                       <img src={p.cover} alt={p.title} />

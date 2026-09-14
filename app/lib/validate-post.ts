@@ -9,6 +9,10 @@ function asString(value: unknown) {
   return typeof value === "string" ? value.trim() : "";
 }
 
+function asBoolean(value: unknown) {
+  return typeof value === "boolean" ? value : false;
+}
+
 function asStringArray(value: unknown) {
   if (Array.isArray(value)) return value.map((item) => asString(item)).filter(Boolean);
   if (typeof value === "string") {
@@ -57,5 +61,6 @@ export function parsePostPayload(body: unknown): { error: string } | PostInput {
     solution: asString(data.solution) || undefined,
     outcome: asString(data.outcome) || undefined,
     localeFor: (asStringArray(data.localeFor) || ['global']) as Post['localeFor'],
+    featured: asBoolean(data.featured),
   };
 }

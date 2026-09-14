@@ -42,6 +42,7 @@ type EditorState = {
   challenge: string;
   solution: string;
   outcome: string;
+  featured: boolean;
 };
 
 function fromPost(post: Post | null, defaultKind: PostKind): EditorState {
@@ -67,6 +68,7 @@ function fromPost(post: Post | null, defaultKind: PostKind): EditorState {
     solution: post?.solution || "",
     outcome: post?.outcome || "",
     localeFor: post?.localeFor || ["global"],
+    featured: post?.featured || false,
   };
 }
 
@@ -289,6 +291,16 @@ export function PostEditor({
             <div className="field">
               <span>Summary</span>
               <textarea rows={4} value={state.summary} onChange={(event) => update("summary", event.target.value)} />
+            </div>
+
+            <div className="field">
+              <div className="checkbox">
+                <div>
+                  <input type="checkbox" name="featured" id="is_featured" checked={state.featured || false}
+                    onChange={(e) => update('featured', e.target.checked)} />
+                  <label htmlFor="is_featured">Mark this post as featured</label>
+                </div>
+              </div>
             </div>
           </div>
         </section>

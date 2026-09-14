@@ -31,6 +31,7 @@ export function serializePost(doc: WithId<PostDocument>): Post {
     updatedAt: doc.updatedAt.toISOString(),
     publishedAt: doc.publishedAt?.toISOString(),
     localeFor: doc.localeFor,
+    featured: doc.featured || false
   };
 }
 
@@ -50,7 +51,8 @@ export function toProject(post: Post): Project {
     solution: post.solution,
     outcome: post.outcome,
     services: post.services || [],
-    localeFor: post.localeFor || ['global']
+    localeFor: post.localeFor || ['global'],
+    featured: post.featured || false
   };
 }
 
@@ -172,6 +174,7 @@ export function postFromInput(input: PostInput, existing?: Post): PostDocument {
     solution: input.solution,
     outcome: input.outcome,
     localeFor: input.localeFor,
+    featured: input.featured,
     createdAt: existing ? new Date(existing.createdAt) : now,
     updatedAt: now,
     publishedAt: publishing

@@ -28,6 +28,7 @@ export type Post = {
   createdAt: string;
   updatedAt: string;
   publishedAt?: string;
+  featured?: boolean;
 };
 
 export type PostInput = Omit<Post, "_id" | "createdAt" | "updatedAt"> & {
@@ -97,6 +98,7 @@ export type Project = {
   outcome?: string;
   services: string[];
   localeFor?: Post['localeFor'];
+  featured?: boolean;
 };
 
 export type BlogPost = {
