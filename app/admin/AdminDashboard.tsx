@@ -39,6 +39,26 @@ function DashboardMain() {
   const [pendingDelete, setPendingDelete] = useState<Post | null>(null);
   const [deleting, setDeleting] = useState(false);
 
+  function showLocaleCountryName(locale: Post["localeFor"]) {
+    if (!locale) return "Global";
+
+    return locale.map((l) => {
+      if (l === "GB") return "United Kingdom";
+      if (l === "ZA") return "South Africa"
+      return "Global";
+    }).join(", ");
+  }
+
+  function convertLocaleToCommonLang(locale: Post["localeFor"]) {
+    if (!locale) return "global";
+
+    return locale.map((l) => {
+      if (l === "GB") return "uk";
+      if (l === "ZA") return "sa, za";
+      return "global";
+    }).join(", ");
+  }
+
   useEffect(() => {
     let ignore = false;
     async function load() {
@@ -65,8 +85,8 @@ function DashboardMain() {
     return posts.filter((post) => {
       if (filter !== "all" && post.kind !== filter) return false;
       if (!q) return true;
-      return [post.title, post.slug, post.client, post.category].some((value) =>
-        value?.toLowerCase().includes(q),
+      return [post.title, post.slug, post.client, post.category, post.localeFor].some((value) =>
+        !Array.isArray(value) ? value?.toLowerCase().includes(q) : showLocaleCountryName(value).toLowerCase().includes(q) || convertLocaleToCommonLang(value).includes(q),
       );
     });
   }, [posts, filter, query]);
@@ -130,7 +150,7 @@ function DashboardMain() {
             />
           </div>
           <div className="contentTable">
-            <div className="tableHead"><span>Title</span><span>Status</span><span>Updated</span><span /></div>
+            <div className="tableHead"><span>Title</span><span>Locale</span><span>Featured?</span><span>Status</span><span>Updated</span><span /></div>
             {error ? <p className="emptyTable">{error}</p> : null}
             {!loading && !error && visible.length === 0 ? <p className="emptyTable">No matching content yet.</p> : null}
             {visible.map((post) => (
@@ -139,6 +159,8 @@ function DashboardMain() {
                   <b>{post.title}</b>
                   <small>{kindLabel(post)}</small>
                 </div>
+                <span>{showLocaleCountryName(post.localeFor)}</span>
+                <span>{post.featured ? "Yes" : "No"}</span>
                 <span className={`status ${post.status}`}>{post.status}</span>
                 <span>{formatDisplayDate(post.updatedAt)}</span>
                 <div className="tableActions">
