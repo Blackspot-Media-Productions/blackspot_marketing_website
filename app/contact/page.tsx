@@ -41,7 +41,7 @@ export default async function Contact() {
 
           {!isUkDomain && (
             <a href="tel:+27814278898">
-              <h2 style={{ marginTop: 0 }}>+27 81 427 8898</h2>
+              <h2 style={{ marginTop: isSaDomain ? undefined : 0 }}>+27 81 427 8898</h2>
             </a>
           )}
         </div>
