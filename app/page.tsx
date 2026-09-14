@@ -4,6 +4,7 @@ import { PageLoader } from "./components/PageLoader";
 import { auditLink, Footer, Header } from "./components/SiteChrome";
 import { getProjects } from "./lib/content";
 import { getDomain } from "./utils";
+import Link from "next/link";
 
 export const revalidate = 60;
 
@@ -13,24 +14,28 @@ const services = [
     title: "Branding & Design",
     copy: "Positioning, identity and design systems that make your business unmistakable.",
     tags: ["Strategy", "Identity", "Collateral"],
+    id: "branding"
   },
   {
     n: "02",
     title: "Digital Marketing",
     copy: "Focused campaigns and content that turn attention into meaningful business growth.",
     tags: ["Campaigns", "Content", "Performance"],
+    id: "marketing"
   },
   {
     n: "03",
     title: "Media Production",
     copy: "Sharp, story-led photography and film built for how modern audiences consume media.",
     tags: ["Film", "Photography", "Storytelling"],
+    id: "media"
   },
   {
     n: "04",
     title: "Software, IT & Workflow",
     copy: "Practical digital systems that remove friction and make businesses easier to run.",
     tags: ["Web", "Software", "Automation"],
+    id: "software"
   },
 ];
 
@@ -142,7 +147,7 @@ export default async function Home() {
                     <span key={t}>{t}</span>
                   ))}
                 </div>
-                <span className="serviceArrow">↗</span>
+                <Link href={`/services#${s.id}`}><span className="serviceArrow">↗</span></Link>
               </article>
             ))}
           </div>

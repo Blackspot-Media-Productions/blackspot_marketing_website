@@ -951,7 +951,8 @@ h1 em {
   font-size: 13px;
 }
 .detailRow li:before {
-  content: "↗";
+  /*content: "↗";*/
+  content: "✓";
   color: var(--orange);
   margin-right: 12px;
 }
@@ -1529,7 +1530,7 @@ h1 em {
   line-height: 1.25;
   letter-spacing: -0.04em;
   margin: 0;
-  font-weight: 500;
+  font-weight: 400;
 }
 .caseGallery {
   padding: 120px 0;
