@@ -139,13 +139,15 @@ export default async function Home() {
                 key={s.n}
                 style={{ "--reveal-delay": `${i * 70}ms` } as CSSProperties}
               >
-                <span className="serviceNo">{s.n}</span>
-                <h3>{s.title}</h3>
-                <p>{s.copy}</p>
-                <div className="tags">
-                  {s.tags.map((t) => (
-                    <span key={t}>{t}</span>
-                  ))}
+                <div className="service-content">
+                  <span className="serviceNo">{s.n}</span>
+                  <h3>{s.title}</h3>
+                  <p>{s.copy}</p>
+                  <div className="tags">
+                    {s.tags.map((t) => (
+                      <span key={t}>{t}</span>
+                    ))}
+                  </div>
                 </div>
                 <Link href={`/services#${s.id}`}><span className="serviceArrow">↗</span></Link>
               </article>

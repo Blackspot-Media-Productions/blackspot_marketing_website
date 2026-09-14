@@ -1,6 +1,7 @@
 import React from "react";
 import { getMediaProdLink, getDomain } from "../utils";
 import { JSX } from "react/jsx-dev-runtime";
+import NavLinkWrapper from "./NavLinkWrapper";
 
 export const auditLink = (placement: string) =>
   `https://audit.theblackspotgroup.com/?utm_source=website&utm_medium=referral&utm_campaign=brand_audit&utm_content=${placement}`;
@@ -16,23 +17,7 @@ export async function Header() {
           alt="Blackspot Media Production & Events"
         />
       </a>
-      <div className="navLinks">
-        <a href="/services">Services</a>
-        <div className="nav-dropdown">
-          <span style={{ cursor: "pointer" }}>Products</span>
-          <div>
-            <a href={mediaProdLink} referrerPolicy="no-referrer">Media Production</a>
-            <a href="https://usefirstday.com" target="_blank" referrerPolicy="no-referrer">First Day</a>
-          </div>
-        </div>
-        <a href="/work">Work</a>
-        <a href="/blog">Ideas</a>
-        <a href="/about">About</a>
-        <a href="/contact">Contact</a>
-      </div>
-      <a className="navCta" href={auditLink("header")}>
-        Get your free audit <span>↗</span>
-      </a>
+      <NavLinkWrapper mediaLink={mediaProdLink} />
     </nav>
   );
 }
