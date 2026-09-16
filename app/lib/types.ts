@@ -20,7 +20,10 @@ export type Post = {
   type?: ProjectType;
   year?: string;
   services?: string[];
-  images?: string[];
+  images?: ({
+    content: string;
+    type: "image" | "video"
+  } | string)[];
   video?: string;
   challenge?: string;
   solution?: string;
@@ -91,7 +94,10 @@ export type Project = {
   cover: string;
   year: string;
   summary: string;
-  images?: string[];
+  images?: ({
+    content: string;
+    type: "image" | "video"
+  } | string)[];
   video?: string;
   challenge?: string;
   solution?: string;

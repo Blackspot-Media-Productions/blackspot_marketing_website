@@ -4,6 +4,7 @@ import { getProject } from "../../lib/content";
 import { categoryMap } from "../../lib/data";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Fragment } from "react/jsx-runtime";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
@@ -62,8 +63,12 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
         {p.type === "gallery" && (
           <section className="galleryStage shell">
             {p.images?.map((img, i) => (
-              <figure key={img} className={`galleryItem gallery${i + 1}`}>
-                <img src={img} alt={`${p.title} — image ${i + 1}`} />
+              <figure key={typeof img === "string" ? img : img.content} className={`galleryItem gallery${i + 1}`}>
+                {typeof img === "string" || img.type === "image" ? (
+                  <img src={typeof img === "string" ? img : img.content} alt={`${p.title} — image ${i + 1}`} />
+                ) : (
+                    <video src={img.content} autoPlay={false} controls loop={false} />
+                )}
               </figure>
             ))}
           </section>
@@ -83,7 +88,15 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
               </div>
             </section>
             <section className="caseGallery shell">
-              {p.images?.map((img) => <img key={img} src={img} alt={`${p.title} process image`} />)}
+              {p.images?.map((img, i) => (
+                <Fragment>
+                  {typeof img === "string" || img.type === "image" ? (
+                    <img key={typeof img === "string" ? img : img.content} src={typeof img === "string" ? img : img.content} alt={`${p.title} process image`} />
+                  ) : (
+                    <video src={img.content} autoPlay={false} controls loop={false} />
+                  )}
+                </Fragment>
+              ))}
             </section>
           </>
         )}

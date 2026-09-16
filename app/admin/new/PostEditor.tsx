@@ -37,7 +37,10 @@ type EditorState = {
   type: ProjectType;
   year: string;
   services: string;
-  images: string[];
+  images: ({
+    content: string;
+    type: "image" | "video"
+  } | string)[];
   video: string;
   challenge: string;
   solution: string;
@@ -104,6 +107,7 @@ export function PostEditor({
   const coverInput = useRef<HTMLInputElement>(null);
   const extraInput = useRef<HTMLInputElement>(null);
   const videoInput = useRef<HTMLInputElement>(null);
+  const galleryInput = useRef<HTMLInputElement>(null);
 
   function update<K extends keyof EditorState>(key: K, value: EditorState[K]) {
     setState((current) => ({ ...current, [key]: value }));
@@ -150,7 +154,7 @@ export function PostEditor({
     router.push("/admin");
   }
 
-  async function handleFiles(files: FileList | null, target: "cover" | "images" | "video") {
+  async function handleFiles(files: FileList | null, target: "cover" | "images" | "video" | "gallery") {
     if (!files?.length) return;
     try {
       for (const file of Array.from(files)) {
@@ -161,9 +165,21 @@ export function PostEditor({
         if (target === "images") {
           setState((current) => ({
             ...current,
-            images: [...current.images, url],
+            images: [...current.images, {
+              content: url,
+              type: "image"
+            }],
             cover: current.cover || url,
           }));
+        }
+        if (target === "gallery") {
+          setState((current) => ({
+            ...current,
+            images: [...current.images, {
+              content: url,
+              type: file.type.startsWith("video/") ? "video" : "image"
+            }]
+          }))
         }
       }
       setUploadLabel("");
@@ -173,7 +189,7 @@ export function PostEditor({
     }
   }
 
-  function onFile(event: ChangeEvent<HTMLInputElement>, target: "cover" | "images" | "video") {
+  function onFile(event: ChangeEvent<HTMLInputElement>, target: "cover" | "images" | "video" | "gallery") {
     void handleFiles(event.target.files, target);
     event.target.value = "";
   }
@@ -310,6 +326,7 @@ export function PostEditor({
           <div>
             <input ref={coverInput} className="hiddenFile" type="file" accept="image/*" onChange={(event) => onFile(event, "cover")} />
             <input ref={extraInput} className="hiddenFile" type="file" accept="image/*" multiple onChange={(event) => onFile(event, "images")} />
+            <input ref={galleryInput} className="hiddenFile" type="file" accept="image/*,video/mp4" multiple onChange={(event) => onFile(event, "gallery")} />
             <input ref={videoInput} className="hiddenFile" type="file" accept="video/mp4,video/webm,video/quicktime" onChange={(event) => onFile(event, "video")} />
             <button className="uploadDemo" type="button" onClick={() => coverInput.current?.click()}>
               <span>＋</span>
@@ -331,12 +348,16 @@ export function PostEditor({
             {showGallery ? (
               <>
                 <div className="mediaActions">
-                  <button type="button" onClick={() => extraInput.current?.click()}>Add gallery images</button>
+                  <button type="button" onClick={() => galleryInput.current?.click()}>Add gallery images</button>
                 </div>
                 <div className="mediaGrid">
                   {state.images.map((src) => (
-                    <figure key={src}>
-                      <img src={src} alt="" />
+                    <figure key={typeof src === "string" ? src : src.content}>
+                      {typeof src === "string" || src.type === "image" ? (
+                        <img src={typeof src === "string" ? src : src.content} alt="" />
+                      ) : (
+                          <video src={src.content} autoPlay={false} loop={false} />
+                      )}
                       <button
                         type="button"
                         onClick={() => update("images", state.images.filter((item) => item !== src))}

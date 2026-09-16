@@ -21,6 +21,24 @@ function asStringArray(value: unknown) {
   return [] as string[];
 }
 
+function asObjectOrStringArray(value: unknown): Post['images'] {
+  if (Array.isArray(value)) {
+    const objectArray = value.map((item) => {
+      const proto = Object.getPrototypeOf(item);
+      if (item !== null && typeof item === "object" && (proto === Object.prototype || proto === null)) {
+        if (item.type && item.content) return item as Post['images'];
+      } else if (typeof item === "string") {
+        return {
+          content: item,
+          type: "image"
+        }
+      } else return "" as string
+    }).filter(Boolean) as Post['images'];
+
+    return objectArray;
+  }
+}
+
 export function parsePostPayload(body: unknown): { error: string } | PostInput {
   if (!body || typeof body !== "object") return { error: "Invalid payload" };
   const data = body as Record<string, unknown>;
@@ -55,7 +73,7 @@ export function parsePostPayload(body: unknown): { error: string } | PostInput {
     type: kind === "proof" ? (type || "image") : undefined,
     year: asString(data.year) || undefined,
     services: asStringArray(data.services),
-    images: asStringArray(data.images),
+    images: asObjectOrStringArray(data.images),
     video: asString(data.video) || undefined,
     challenge: asString(data.challenge) || undefined,
     solution: asString(data.solution) || undefined,
