@@ -2,7 +2,12 @@
 
 import { useEffect, useState, type FormEvent } from "react";
 import { ALL_PERMISSIONS, permissionLabel } from "../../lib/access";
-import type { AccessRole, AdminSession, MemberPermission, TeamMember } from "../../lib/types";
+import type {
+  AccessRole,
+  AdminSession,
+  MemberPermission,
+  TeamMember,
+} from "../../lib/types";
 import { AdminShell, useAdminUser } from "../components/AdminShell";
 import { ConfirmDelete } from "../components/ConfirmDelete";
 import { useToast } from "../components/ToastProvider";
@@ -18,7 +23,8 @@ const defaultAccess = (): AccessState => ({
 });
 
 function accessFromMember(member: TeamMember): AccessState {
-  if (member.role === "super_admin") return { role: "super_admin", permissions: [] };
+  if (member.role === "super_admin")
+    return { role: "super_admin", permissions: [] };
   return { role: "member", permissions: [...member.permissions] };
 }
 
@@ -58,7 +64,11 @@ function AccessFields({
           type="checkbox"
           checked={superAdmin}
           onChange={(event) =>
-            onChange(event.target.checked ? { role: "super_admin", permissions: [] } : defaultAccess())
+            onChange(
+              event.target.checked
+                ? { role: "super_admin", permissions: [] }
+                : defaultAccess(),
+            )
           }
         />
         <span>
@@ -67,7 +77,10 @@ function AccessFields({
         </span>
       </label>
       {ALL_PERMISSIONS.map((permission) => (
-        <label className={`permissionRow${superAdmin ? " disabled" : ""}`} key={permission}>
+        <label
+          className={`permissionRow${superAdmin ? " disabled" : ""}`}
+          key={permission}
+        >
           <input
             type="checkbox"
             disabled={superAdmin}
@@ -205,7 +218,9 @@ function TeamFields() {
 
   async function copyInvite(member?: TeamMember) {
     if (member) {
-      const response = await fetch(`/api/team/${member._id}/invite`, { method: "POST" });
+      const response = await fetch(`/api/team/${member._id}/invite`, {
+        method: "POST",
+      });
       const data = await response.json().catch(() => null);
       if (!response.ok) {
         toast.error(data?.error || "Could not create invite link");
@@ -218,13 +233,17 @@ function TeamFields() {
     }
     if (!inviteUrl) return;
     const copied = await copyText(inviteUrl);
-    toast[copied ? "success" : "error"](copied ? "Invite link copied" : "Could not copy the link");
+    toast[copied ? "success" : "error"](
+      copied ? "Invite link copied" : "Could not copy the link",
+    );
   }
 
   async function confirmRevoke() {
     if (!pendingRevoke) return;
     setRevoking(true);
-    const response = await fetch(`/api/team/${pendingRevoke._id}`, { method: "DELETE" });
+    const response = await fetch(`/api/team/${pendingRevoke._id}`, {
+      method: "DELETE",
+    });
     const data = await response.json().catch(() => null);
     setRevoking(false);
     if (!response.ok) {
@@ -241,15 +260,24 @@ function TeamFields() {
       <header>
         <div>
           <p>Blackspot CMS</p>
-          <h1>Members</h1>
+          <h1>Admin Users</h1>
         </div>
-        <button onClick={() => setInviting(true)} type="button">＋ Invite</button>
+        <button onClick={() => setInviting(true)} type="button">
+          ＋ Invite
+        </button>
       </header>
       <section className="contentPanel">
         <div className="contentTable teamTable">
-          <div className="tableHead"><span>Person</span><span>Access</span><span>Status</span><span /></div>
+          <div className="tableHead">
+            <span>Person</span>
+            <span>Access</span>
+            <span>Status</span>
+            <span />
+          </div>
           {error ? <p className="emptyTable">{error}</p> : null}
-          {!loading && !error && members.length === 0 ? <p className="emptyTable">No team members yet.</p> : null}
+          {!loading && !error && members.length === 0 ? (
+            <p className="emptyTable">No team members yet.</p>
+          ) : null}
           {members.map((member) => (
             <div className="tableRow" key={member._id}>
               <div>
@@ -257,7 +285,9 @@ function TeamFields() {
                 <small>{member.email}</small>
               </div>
               <span className="accessSummary">{accessSummary(member)}</span>
-              <span className={`status ${member.status}`}>{statusLabel(member.status)}</span>
+              <span className={`status ${member.status}`}>
+                {statusLabel(member.status)}
+              </span>
               <div className="tableActions">
                 {member.status !== "revoked" ? (
                   <button
@@ -272,12 +302,20 @@ function TeamFields() {
                   </button>
                 ) : null}
                 {member.status === "pending" || member.status === "revoked" ? (
-                  <button type="button" className="textBtn" onClick={() => void copyInvite(member)}>
+                  <button
+                    type="button"
+                    className="textBtn"
+                    onClick={() => void copyInvite(member)}
+                  >
                     {member.status === "revoked" ? "Re-invite" : "Copy link"}
                   </button>
                 ) : null}
                 {member._id !== user?.sub && member.status !== "revoked" ? (
-                  <button type="button" className="textBtn dangerText" onClick={() => setPendingRevoke(member)}>
+                  <button
+                    type="button"
+                    className="textBtn dangerText"
+                    onClick={() => setPendingRevoke(member)}
+                  >
                     Revoke
                   </button>
                 ) : null}
@@ -288,23 +326,53 @@ function TeamFields() {
       </section>
 
       {inviting ? (
-        <div className="typeModal" role="dialog" aria-modal="true" aria-labelledby="invite-title">
+        <div
+          className="typeModal"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="invite-title"
+        >
           <div className="modalCard inviteCard">
-            <button className="modalClose" onClick={() => !savingInvite && setInviting(false)} aria-label="Close" type="button">×</button>
-            <p className="sectionLabel">Team</p>
+            <button
+              className="modalClose"
+              onClick={() => !savingInvite && setInviting(false)}
+              aria-label="Close"
+              type="button"
+            >
+              ×
+            </button>
+            <p className="sectionLabel">Access</p>
             <h2 id="invite-title">Invite someone</h2>
-            <form className="inviteForm" onSubmit={(event) => void onInvite(event)}>
+            <form
+              className="inviteForm"
+              onSubmit={(event) => void onInvite(event)}
+            >
               <div className="field">
                 <span>Email</span>
-                <input type="email" value={inviteEmail} onChange={(event) => setInviteEmail(event.target.value)} required />
+                <input
+                  type="email"
+                  value={inviteEmail}
+                  onChange={(event) => setInviteEmail(event.target.value)}
+                  required
+                />
               </div>
               <div className="field">
                 <span>Name</span>
-                <input value={inviteName} onChange={(event) => setInviteName(event.target.value)} placeholder="Optional" />
+                <input
+                  value={inviteName}
+                  onChange={(event) => setInviteName(event.target.value)}
+                  placeholder="Optional"
+                />
               </div>
-              <p className="profileHint">Choose their access. You can change this later.</p>
+              <p className="profileHint">
+                Choose their access. You can change this later.
+              </p>
               <AccessFields access={inviteAccess} onChange={setInviteAccess} />
-              <button className="publishBtn" type="submit" disabled={savingInvite}>
+              <button
+                className="publishBtn"
+                type="submit"
+                disabled={savingInvite}
+              >
                 {savingInvite ? "Creating invite…" : "Create invite link"}
               </button>
             </form>
@@ -313,15 +381,36 @@ function TeamFields() {
       ) : null}
 
       {editing ? (
-        <div className="typeModal" role="dialog" aria-modal="true" aria-labelledby="rights-title">
+        <div
+          className="typeModal"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="rights-title"
+        >
           <div className="modalCard inviteCard">
-            <button className="modalClose" onClick={() => !savingEdit && setEditing(null)} aria-label="Close" type="button">×</button>
+            <button
+              className="modalClose"
+              onClick={() => !savingEdit && setEditing(null)}
+              aria-label="Close"
+              type="button"
+            >
+              ×
+            </button>
             <p className="sectionLabel">Access</p>
             <h2 id="rights-title">Edit rights</h2>
-            <p className="confirmCopy">{editing.name} · {editing.email}</p>
-            <form className="inviteForm" onSubmit={(event) => void onSaveRights(event)}>
+            <p className="confirmCopy">
+              {editing.name} · {editing.email}
+            </p>
+            <form
+              className="inviteForm"
+              onSubmit={(event) => void onSaveRights(event)}
+            >
               <AccessFields access={editAccess} onChange={setEditAccess} />
-              <button className="publishBtn" type="submit" disabled={savingEdit}>
+              <button
+                className="publishBtn"
+                type="submit"
+                disabled={savingEdit}
+              >
                 {savingEdit ? "Saving…" : "Save rights"}
               </button>
             </form>
@@ -330,16 +419,39 @@ function TeamFields() {
       ) : null}
 
       {inviteUrl ? (
-        <div className="typeModal" role="dialog" aria-modal="true" aria-labelledby="copy-title">
+        <div
+          className="typeModal"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="copy-title"
+        >
           <div className="modalCard inviteCard">
-            <button className="modalClose" onClick={() => setInviteUrl("")} aria-label="Close" type="button">×</button>
+            <button
+              className="modalClose"
+              onClick={() => setInviteUrl("")}
+              aria-label="Close"
+              type="button"
+            >
+              ×
+            </button>
             <p className="sectionLabel">Invite link</p>
             <h2 id="copy-title">Share this link</h2>
-            <p className="confirmCopy">It expires in 7 days. Generating a new link invalidates the previous one.</p>
+            <p className="confirmCopy">
+              It expires in 7 days. Generating a new link invalidates the
+              previous one.
+            </p>
             <div className="copyLinkBox">{inviteUrl}</div>
             <div className="confirmActions">
-              <button type="button" onClick={() => setInviteUrl("")}>Done</button>
-              <button type="button" className="publishBtn" onClick={() => void copyInvite()}>Copy link</button>
+              <button type="button" onClick={() => setInviteUrl("")}>
+                Done
+              </button>
+              <button
+                type="button"
+                className="publishBtn"
+                onClick={() => void copyInvite()}
+              >
+                Copy link
+              </button>
             </div>
           </div>
         </div>

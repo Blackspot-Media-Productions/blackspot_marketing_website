@@ -85,20 +85,20 @@ export function AdminShell({
             >
               Team
             </a>
-            {isSuperAdmin(user) ? (
-              <a
-                className={active === "members" ? "active" : undefined}
-                href="/admin/members"
-              >
-                Members
-              </a>
-            ) : null}
             <a
               className={active === "profile" ? "active" : undefined}
               href="/admin/profile"
             >
               Profile
             </a>
+            {isSuperAdmin(user) ? (
+              <a
+                className={active === "members" ? "active" : undefined}
+                href="/admin/users"
+              >
+                Admin users
+              </a>
+            ) : null}
             <a href="/work">View website</a>
           </nav>
           <div className="adminUser">
