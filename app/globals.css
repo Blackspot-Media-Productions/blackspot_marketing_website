@@ -1441,6 +1441,9 @@ h1 em {
   grid-column: span 6;
   margin-bottom: 55px;
 }
+.projectCard.team {
+  grid-column: span 4;
+}
 .projectCard2 {
   margin-top: 120px;
 }

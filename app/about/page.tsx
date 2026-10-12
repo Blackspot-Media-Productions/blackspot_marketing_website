@@ -116,13 +116,13 @@ export default async function About() {
             </div>
           </div>
 
-          <div className="projectGrid">
+          <div className="projectGrid team">
             {teamMembers.map((t, i) => {
               const isVisible = t.isActive && t.status === "published";
 
               return (
                 <div
-                  className={`projectCard projectCard${i + 1}`}
+                  className="projectCard team"
                   key={t._id.toString()}
                   data-reveal
                   style={{ display: isVisible ? "block" : "none" }}
