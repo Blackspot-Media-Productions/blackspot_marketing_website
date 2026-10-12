@@ -1,5 +1,5 @@
 import { revalidatePath } from "next/cache";
-import type { Post } from "./types";
+import type { MemberContent, Post } from "./types";
 
 export function revalidateContent(post: Pick<Post, "kind" | "slug">) {
   revalidatePath("/");
@@ -7,4 +7,8 @@ export function revalidateContent(post: Pick<Post, "kind" | "slug">) {
   revalidatePath("/blog");
   if (post.kind === "proof") revalidatePath(`/work/${post.slug}`);
   if (post.kind === "blog") revalidatePath(`/blog/${post.slug}`);
+}
+
+export function revalidateMember() {
+  revalidatePath("/about");
 }

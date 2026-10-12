@@ -97,7 +97,7 @@ function AccessFields({
 
 export function TeamPanel({ initialUser }: { initialUser: AdminSession }) {
   return (
-    <AdminShell active="team" initialUser={initialUser}>
+    <AdminShell active="members" initialUser={initialUser}>
       <TeamFields />
     </AdminShell>
   );
@@ -241,7 +241,7 @@ function TeamFields() {
       <header>
         <div>
           <p>Blackspot CMS</p>
-          <h1>Team</h1>
+          <h1>Members</h1>
         </div>
         <button onClick={() => setInviting(true)} type="button">＋ Invite</button>
       </header>

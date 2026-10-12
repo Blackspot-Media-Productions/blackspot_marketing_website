@@ -34,7 +34,11 @@ export async function compressImageFile(file: File): Promise<File> {
   }
 }
 
-export async function uploadMedia(file: File, onProgress?: (label: string) => void) {
+export async function uploadMedia(
+  file: File,
+  onProgress?: (label: string) => void,
+  isTeamUpload?: boolean,
+) {
   const prepared = file.type.startsWith("video/")
     ? file
     : await compressImageFile(file);
@@ -43,7 +47,9 @@ export async function uploadMedia(file: File, onProgress?: (label: string) => vo
     throw new Error("Video must be 200MB or smaller");
   }
 
-  onProgress?.(prepared.type.startsWith("image/") ? "Compressing…" : "Preparing…");
+  onProgress?.(
+    prepared.type.startsWith("image/") ? "Compressing…" : "Preparing…",
+  );
 
   const presign = await fetch("/api/upload/presign", {
     method: "POST",
@@ -52,6 +58,7 @@ export async function uploadMedia(file: File, onProgress?: (label: string) => vo
       filename: prepared.name,
       contentType: prepared.type || "application/octet-stream",
       size: prepared.size,
+      isTeamUpload,
     }),
   });
   if (!presign.ok) {
@@ -59,7 +66,10 @@ export async function uploadMedia(file: File, onProgress?: (label: string) => vo
     throw new Error(data?.error || "Could not start upload");
   }
 
-  const { uploadUrl, publicUrl } = await presign.json() as { uploadUrl: string; publicUrl: string };
+  const { uploadUrl, publicUrl } = (await presign.json()) as {
+    uploadUrl: string;
+    publicUrl: string;
+  };
   onProgress?.("Uploading…");
 
   const put = await fetch(uploadUrl, {

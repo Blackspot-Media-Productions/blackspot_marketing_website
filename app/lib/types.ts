@@ -12,7 +12,7 @@ export type Post = {
   cover: string;
   seoTitle?: string;
   seoDescription?: string;
-  localeFor?: ('GB' | 'ZA' | 'global')[];
+  localeFor?: ("GB" | "ZA" | "global")[];
   category?: string;
   body?: string;
   read?: string;
@@ -20,10 +20,13 @@ export type Post = {
   type?: ProjectType;
   year?: string;
   services?: string[];
-  images?: ({
-    content: string;
-    type: "image" | "video"
-  } | string)[];
+  images?: (
+    | {
+        content: string;
+        type: "image" | "video";
+      }
+    | string
+  )[];
   video?: string;
   challenge?: string;
   solution?: string;
@@ -40,14 +43,23 @@ export type PostInput = Omit<Post, "_id" | "createdAt" | "updatedAt"> & {
   updatedAt?: string;
 };
 
-export type PostDocument = Omit<Post, "_id" | "createdAt" | "updatedAt" | "publishedAt"> & {
+export type PostDocument = Omit<
+  Post,
+  "_id" | "createdAt" | "updatedAt" | "publishedAt"
+> & {
   createdAt: Date;
   updatedAt: Date;
   publishedAt?: Date;
 };
 
 export type AccessRole = "super_admin" | "member";
-export type MemberPermission = "content.write" | "content.publish" | "content.delete";
+export type MemberPermission =
+  | "content.write"
+  | "content.publish"
+  | "content.delete"
+  | "member.write"
+  | "member.publish"
+  | "member.delete";
 export type UserStatus = "pending" | "active" | "revoked";
 
 export type UserDocument = {
@@ -74,6 +86,37 @@ export type AdminSession = {
   permissions: MemberPermission[];
 };
 
+export type MemberContent = {
+  _id: string;
+  email: string;
+  name: string;
+  photo: string;
+  role: string;
+  isActive: boolean;
+  status: PostStatus;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt?: string;
+};
+
+export type TeamMenberInput = Omit<
+  MemberContent,
+  "_id" | "createdAt" | "updatedAt"
+> & {
+  _id?: string;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
+export type MemberDocument = Omit<
+  MemberContent,
+  "_id" | "createdAt" | "updatedAt" | "publishedAt"
+> & {
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt?: Date;
+};
+
 export type TeamMember = {
   _id: string;
   email: string;
@@ -94,16 +137,19 @@ export type Project = {
   cover: string;
   year: string;
   summary: string;
-  images?: ({
-    content: string;
-    type: "image" | "video"
-  } | string)[];
+  images?: (
+    | {
+        content: string;
+        type: "image" | "video";
+      }
+    | string
+  )[];
   video?: string;
   challenge?: string;
   solution?: string;
   outcome?: string;
   services: string[];
-  localeFor?: Post['localeFor'];
+  localeFor?: Post["localeFor"];
   featured?: boolean;
 };
 

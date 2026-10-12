@@ -5,6 +5,7 @@ import {
   PageHero,
   sharedSocial,
 } from "../components/SiteChrome";
+import { getPublishedTeamMembers } from "../lib/team-members";
 export const metadata: Metadata = {
   title: "About — Blackspot",
   description:
@@ -28,7 +29,8 @@ const awards = [
     "Sol Plaatje Municipality Business Excellence Awards",
   ],
 ];
-export default function About() {
+export default async function About() {
+  const teamMembers = await getPublishedTeamMembers();
   return (
     <main>
       <Header />
@@ -97,6 +99,51 @@ export default function About() {
           <div>
             <b>04</b>
             <span>Connected capabilities</span>
+          </div>
+        </div>
+      </section>
+      <section style={{ height: "1px" }}></section>
+      <section className="aboutStory lightSection">
+        <div className="shell">
+          <div className="sectionHead">
+            <div>
+              <p className="sectionLabel">Team</p>
+              <h2>
+                Meet Our Team
+                <br />
+                <span>The People Behind the Work</span>
+              </h2>
+            </div>
+          </div>
+
+          <div className="projectGrid">
+            {teamMembers.map((t, i) => {
+              const isVisible = t.isActive && t.status === "published";
+
+              return (
+                <div
+                  className={`projectCard projectCard${i + 1}`}
+                  key={t._id.toString()}
+                  data-reveal
+                  style={{ display: isVisible ? "block" : "none" }}
+                >
+                  <div className="projectImage">
+                    <img
+                      src={t.photo}
+                      alt={t.name}
+                      style={{ objectPosition: "top" }}
+                    />
+                    <span>{t.email}</span>
+                  </div>
+                  <div className="projectMeta">
+                    <div>
+                      <p>{t.role}</p>
+                      <h2>{t.name}</h2>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </section>

@@ -34,7 +34,8 @@ export function getR2Client() {
 
 export function isAllowedUpload(contentType: string, size: number) {
   if (!ALLOWED_TYPES.has(contentType)) return false;
-  if (contentType.startsWith("video/")) return size > 0 && size <= MAX_VIDEO_BYTES;
+  if (contentType.startsWith("video/"))
+    return size > 0 && size <= MAX_VIDEO_BYTES;
   return size > 0 && size <= MAX_IMAGE_BYTES;
 }
 
@@ -54,12 +55,24 @@ export async function presignUpload(key: string, contentType: string) {
   return { uploadUrl, publicUrl: publicAssetUrl(key), key };
 }
 
-export function uploadKey(filename: string, contentType: string) {
+export function uploadKey(
+  filename: string,
+  contentType: string,
+  isTeamMemberUpload: boolean = false,
+) {
   const safe = filename.replace(/[^a-zA-Z0-9._-]/g, "-").toLowerCase();
   const extFromName = safe.includes(".") ? safe.split(".").pop() : "";
-  const extFromType = contentType.split("/")[1]?.replace("jpeg", "jpg").replace("quicktime", "mov");
+  const extFromType = contentType
+    .split("/")[1]
+    ?.replace("jpeg", "jpg")
+    .replace("quicktime", "mov");
   const ext = extFromName || extFromType || "bin";
   const prefix = contentType.startsWith("video/") ? "video" : "image";
   const stamp = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+
+  if (isTeamMemberUpload) {
+    return `team/${stamp}.${ext}`;
+  }
+
   return `uploads/${prefix}/${stamp}.${ext}`;
 }

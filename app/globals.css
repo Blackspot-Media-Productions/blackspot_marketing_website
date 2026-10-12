@@ -51,7 +51,9 @@ h1 em {
   align-items: center;
   gap: 36px;
 }
-.nav-links-wrapper > button {display: none;}
+.nav-links-wrapper > button {
+  display: none;
+}
 .navLinks {
   display: flex;
   gap: 34px;
@@ -1412,7 +1414,8 @@ h1 em {
   flex-wrap: wrap;
   margin-bottom: 65px;
 }
-.workFilters button, .workFilters a {
+.workFilters button,
+.workFilters a {
   background: none;
   color: #888;
   border: 1px solid #303030;
@@ -1579,7 +1582,8 @@ h1 em {
 .galleryItem:nth-child(3n) {
   grid-column: 3 / span 8;
 }
-.galleryItem img, .galleryItem video {
+.galleryItem img,
+.galleryItem video {
   display: block;
   width: 100%;
   height: 100%;
@@ -1896,6 +1900,7 @@ h1 em {
   margin: 5px 0;
 }
 .adminMain header button,
+.adminMain header a.button,
 .publishBtn {
   border: 0;
   background: #000;
@@ -1931,6 +1936,7 @@ h1 em {
   background: #fff;
   border-radius: 14px;
   overflow: hidden;
+  margin-top: 16px;
 }
 .contentTools {
   padding: 18px;
@@ -1960,6 +1966,10 @@ h1 em {
   gap: 20px;
   align-items: center;
   padding: 16px 22px;
+}
+.tableHead.members,
+.tableRow.members {
+  grid-template-columns: 1.6fr 0.9fr 0.4fr 0.4fr 0.3fr 110px;
 }
 .tableHead {
   font-size: 9px;
@@ -2304,7 +2314,7 @@ h1 em {
   color: #777;
   margin-top: 2px;
 }
-.field > .checkbox input[type=checkbox] {
+.field > .checkbox input[type="checkbox"] {
   accent-color: var(--orange);
 }
 .uploadDemo {
@@ -2414,7 +2424,8 @@ h1 em {
   .adminMain header h1 {
     font-size: 38px;
   }
-  .adminMain header button {
+  .adminMain header button,
+  .adminMain header a.button {
     font-size: 0;
   }
   .adminMain header button:first-letter {
@@ -2588,7 +2599,8 @@ h1 em {
 .mediaGrid figure {
   margin: 0;
 }
-.mediaGrid img, .mediaGrid video {
+.mediaGrid img,
+.mediaGrid video {
   width: 100%;
   aspect-ratio: 1;
   object-fit: cover;
@@ -3129,6 +3141,8 @@ html.loader-skip .pageLoader {
   margin-top: 4px;
   padding: 4px;
   box-shadow: 0 4px 8px var(--paper);
+  max-height: 200px;
+  overflow-y: auto;
 }
 
 .input-dropdown-items-container button {

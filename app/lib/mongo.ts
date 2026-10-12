@@ -1,5 +1,5 @@
 import { MongoClient, type Db } from "mongodb";
-import type { PostDocument, UserDocument } from "./types";
+import type { MemberDocument, PostDocument, UserDocument } from "./types";
 
 const uri = process.env.MONGODB_URI;
 const dbName = process.env.MONGODB_DB || "blackspot";
@@ -39,4 +39,9 @@ export async function postsCollection() {
 export async function usersCollection() {
   const db = await getDb();
   return db.collection<UserDocument>("users");
+}
+
+export async function teamMembersCollection() {
+  const db = await getDb();
+  return db.collection<MemberDocument>("teamMembers");
 }

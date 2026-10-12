@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
 import { isSuperAdmin } from "../../lib/access";
 import type { AdminSession } from "../../lib/types";
 
@@ -19,12 +25,14 @@ export function useAdminUser() {
 }
 
 function initials(name: string) {
-  return name
-    .split(" ")
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase())
-    .join("") || "BS";
+  return (
+    name
+      .split(" ")
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part) => part[0]?.toUpperCase())
+      .join("") || "BS"
+  );
 }
 
 export function AdminShell({
@@ -32,7 +40,7 @@ export function AdminShell({
   initialUser,
   children,
 }: {
-  active: "content" | "profile" | "team";
+  active: "content" | "profile" | "team" | "members";
   initialUser?: AdminSession | null;
   children: ReactNode;
 }) {
@@ -61,13 +69,36 @@ export function AdminShell({
     <AdminUserContext.Provider value={{ user, setUser }}>
       <div className="adminShell">
         <aside className="adminSide">
-          <a href="/admin" className="adminLogo"><img src="/blackspot-logo.png" alt="Blackspot" /></a>
+          <a href="/admin" className="adminLogo">
+            <img src="/blackspot-logo.png" alt="Blackspot" />
+          </a>
           <nav>
-            <a className={active === "content" ? "active" : undefined} href="/admin">Content</a>
+            <a
+              className={active === "content" ? "active" : undefined}
+              href="/admin"
+            >
+              Content
+            </a>
+            <a
+              className={active === "team" ? "active" : undefined}
+              href="/admin/team-members"
+            >
+              Team
+            </a>
             {isSuperAdmin(user) ? (
-              <a className={active === "team" ? "active" : undefined} href="/admin/team">Team</a>
+              <a
+                className={active === "members" ? "active" : undefined}
+                href="/admin/members"
+              >
+                Members
+              </a>
             ) : null}
-            <a className={active === "profile" ? "active" : undefined} href="/admin/profile">Profile</a>
+            <a
+              className={active === "profile" ? "active" : undefined}
+              href="/admin/profile"
+            >
+              Profile
+            </a>
             <a href="/work">View website</a>
           </nav>
           <div className="adminUser">
@@ -79,7 +110,9 @@ export function AdminShell({
                 <small>{user?.email || "Administrator"}</small>
               </div>
             </a>
-            <button className="logoutBtn" onClick={logout} type="button">Log out</button>
+            <button className="logoutBtn" onClick={logout} type="button">
+              Log out
+            </button>
           </div>
         </aside>
         {children}
