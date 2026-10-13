@@ -5,6 +5,9 @@ import { auditLink, Footer, Header } from "./components/SiteChrome";
 import { getProjects } from "./lib/content";
 import { getDomain } from "./utils";
 import Link from "next/link";
+import { HomepageAuditSection, HomepageHero } from "./components/AuditButtons";
+import { HomepageServiceClicks } from "./components/ServiceClicks";
+import { HomePageProjects } from "./components/ProjectClicks";
 
 export const revalidate = 60;
 
@@ -14,48 +17,54 @@ const services = [
     title: "Branding & Design",
     copy: "Positioning, identity and design systems that make your business unmistakable.",
     tags: ["Strategy", "Identity", "Collateral"],
-    id: "branding"
+    id: "branding",
   },
   {
     n: "02",
     title: "Digital Marketing",
     copy: "Focused campaigns and content that turn attention into meaningful business growth.",
     tags: ["Campaigns", "Content", "Performance"],
-    id: "marketing"
+    id: "marketing",
   },
   {
     n: "03",
     title: "Media Production",
     copy: "Sharp, story-led photography and film built for how modern audiences consume media.",
     tags: ["Film", "Photography", "Storytelling"],
-    id: "media"
+    id: "media",
   },
   {
     n: "04",
     title: "Software, IT & Workflow",
     copy: "Practical digital systems that remove friction and make businesses easier to run.",
     tags: ["Web", "Software", "Automation"],
-    id: "software"
+    id: "software",
   },
 ];
 
 export default async function Home() {
-  const projects = (await getProjects());
+  const projects = await getProjects();
   const { host } = await getDomain();
 
-  const featuredProjects = projects.filter((p) => {
-    const isUkDomain = host?.includes('.co.uk');
-    const isSaDomain = host?.includes('.co.za');
+  const featuredProjects = projects
+    .filter((p) => {
+      const isUkDomain = host?.includes(".co.uk");
+      const isSaDomain = host?.includes(".co.za");
 
-    if ((!isUkDomain && !isSaDomain) || !p.localeFor || p.localeFor.includes('global')) {
-      return true;
-    }
+      if (
+        (!isUkDomain && !isSaDomain) ||
+        !p.localeFor ||
+        p.localeFor.includes("global")
+      ) {
+        return true;
+      }
 
-    return (
-      (isUkDomain && p.localeFor.includes('GB')) ||
-      (isSaDomain && p.localeFor.includes('ZA'))
-    );
-  }).filter((p) => p.featured);
+      return (
+        (isUkDomain && p.localeFor.includes("GB")) ||
+        (isSaDomain && p.localeFor.includes("ZA"))
+      );
+    })
+    .filter((p) => p.featured);
 
   return (
     <>
@@ -80,9 +89,7 @@ export default async function Home() {
               Blackspot helps ambitious businesses look sharper, communicate
               clearly and run more smoothly.
             </p>
-            <a className="primaryCta" href={auditLink("homepage_hero")}>
-              Start with a free audit <span>↗</span>
-            </a>
+            <HomepageHero />
           </div>
         </section>
 
@@ -149,7 +156,7 @@ export default async function Home() {
                     ))}
                   </div>
                 </div>
-                <Link href={`/services#${s.id}`}><span className="serviceArrow">↗</span></Link>
+                <HomepageServiceClicks sId={s.id} sName={s.title} />
               </article>
             ))}
           </div>
@@ -185,25 +192,7 @@ export default async function Home() {
                 >
                   <span className="featured-indicator">Featured</span>
 
-                  <a href={`/work/${p.slug}`}>
-                    <div className="caseVisual">
-                      <img src={p.cover} alt={p.title} />
-                      {p.type === "video" ? (
-                        <i className="playMark casePlay">▶</i>
-                      ) : null}
-                    </div>
-                    <div className="caseCopy">
-                      <p>
-                        {[p.client, p.category, p.year]
-                          .filter(Boolean)
-                          .join(" · ")}
-                      </p>
-                      <h3>{p.title}</h3>
-                      {/*<span dangerouslySetInnerHTML={{__html: p.outcome || p.summary}} />*/}
-                      {/*<span dangerouslySetInnerHTML={{__html: p.outcome || p.summary}}>{p.outcome || p.summary}</span>*/}
-                      <b>View project ↗</b>
-                    </div>
-                  </a>
+                  <HomePageProjects project={p} />
                 </article>
               ))}
             </div>
@@ -277,9 +266,7 @@ export default async function Home() {
                   first.
                 </p>
               </div>
-              <a className="darkCta" href={auditLink("homepage_audit_section")}>
-                Audit my brand <span>↗</span>
-              </a>
+              <HomepageAuditSection />
             </div>
           </div>
         </section>

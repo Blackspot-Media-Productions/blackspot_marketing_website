@@ -6,6 +6,12 @@ import {
   sharedSocial,
 } from "../components/SiteChrome";
 import { getDomain } from "../utils";
+import { ContactPage } from "../components/AuditButtons";
+import {
+  ContactPageEmail,
+  ContactPageSAPhone,
+  ContactPageUKPhone,
+} from "../components/ContactClicks";
 export const metadata: Metadata = {
   title: "Contact — Blackspot",
   description:
@@ -26,28 +32,22 @@ export default async function Contact() {
         intro="Tell us where the business is now, what is getting in the way and where you need to go. We’ll help make the next move clearer."
       />
       <section className="contactGrid shell">
-        <a href="mailto:info@theblackspotgroup.com">
-          <span>Email</span>
-          <h2>info@theblackspotgroup.com</h2>
-          <b>↗</b>
-        </a>
+        <ContactPageEmail />
         <div>
           <span>Call</span>
-          {!isSaDomain && (
-            <a href="tel:+447425068083">
-              <h2>+44 7425 068083</h2>
-            </a>
-          )}
+          {!isSaDomain && <ContactPageUKPhone />}
 
           {!isUkDomain && (
-            <a href="tel:+27814278898">
-              <h2 style={{ marginTop: isSaDomain ? undefined : 0 }}>+27 81 427 8898</h2>
-            </a>
+            <ContactPageSAPhone isSaDomain={isSaDomain || false} />
           )}
         </div>
         {!isSaDomain && (
           <div>
-            {!isUkDomain ? <span>United Kingdom</span> : <span>Office Address</span>}
+            {!isUkDomain ? (
+              <span>United Kingdom</span>
+            ) : (
+              <span>Office Address</span>
+            )}
             <p>
               251 Shaw Road, Royton
               <br />
@@ -57,7 +57,11 @@ export default async function Contact() {
         )}
         {!isUkDomain && (
           <div>
-            {!isSaDomain ? <span>South Africa</span> : <span>Office Address</span>}
+            {!isSaDomain ? (
+              <span>South Africa</span>
+            ) : (
+              <span>Office Address</span>
+            )}
             <p>
               Kimberley, Northern Cape
               <br />
@@ -74,12 +78,7 @@ export default async function Contact() {
             <br />
             <span>Brand & Digital Presence Audit.</span>
           </h2>
-          <a
-            className="darkCta"
-            href="https://audit.theblackspotgroup.com/?utm_source=website&amp;utm_medium=referral&amp;utm_campaign=brand_audit&amp;utm_content=contact_page"
-          >
-            Audit my brand ↗
-          </a>
+          <ContactPage />
         </div>
       </section>
       <Footer />

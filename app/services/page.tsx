@@ -5,6 +5,7 @@ import {
   PageHero,
   sharedSocial,
 } from "../components/SiteChrome";
+import { ServicesPage } from "../components/AuditButtons";
 
 export const metadata: Metadata = {
   title: "Services — Blackspot",
@@ -23,7 +24,7 @@ const detail = [
       "Campaign materials",
       "Company profiles & collateral",
     ],
-    "branding"
+    "branding",
   ],
   [
     "02",
@@ -35,7 +36,7 @@ const detail = [
       "SEO & paid campaigns",
       "Reporting & optimisation",
     ],
-    "marketing"
+    "marketing",
   ],
   [
     "03",
@@ -47,7 +48,7 @@ const detail = [
       "Post-production",
       "Campaign content",
     ],
-    "media"
+    "media",
   ],
   [
     "04",
@@ -59,7 +60,7 @@ const detail = [
       "Workflow automation",
       "Hosting, support & security",
     ],
-    "software"
+    "software",
   ],
 ];
 export default function Services() {
@@ -73,7 +74,11 @@ export default function Services() {
       />
       <section className="detailList shell">
         {detail.map((d) => (
-          <article className="detailRow" id={d[4] as string} key={d[0] as string}>
+          <article
+            className="detailRow"
+            id={d[4] as string}
+            key={d[0] as string}
+          >
             <span>{d[0] as string}</span>
             <div>
               <h2>{d[1] as string}</h2>
@@ -95,12 +100,7 @@ export default function Services() {
             <br />
             <span>We’ll find the right mix.</span>
           </h2>
-          <a
-            className="darkCta"
-            href="https://audit.theblackspotgroup.com/?utm_source=website&amp;utm_medium=referral&amp;utm_campaign=brand_audit&amp;utm_content=services_page"
-          >
-            Get your free audit ↗
-          </a>
+          <ServicesPage />
         </div>
       </section>
       <Footer />
