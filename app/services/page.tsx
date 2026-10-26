@@ -6,6 +6,7 @@ import {
   sharedSocial,
 } from "../components/SiteChrome";
 import { ServicesPage } from "../components/AuditButtons";
+import { getDomain } from "../utils";
 
 export const metadata: Metadata = {
   title: "Services — Blackspot",
@@ -63,7 +64,9 @@ const detail = [
     "software",
   ],
 ];
-export default function Services() {
+export default async function Services() {
+  const { host } = await getDomain();
+
   return (
     <main>
       <Header />
@@ -100,7 +103,7 @@ export default function Services() {
             <br />
             <span>We’ll find the right mix.</span>
           </h2>
-          <ServicesPage />
+          <ServicesPage domain={host || "theblackspotgroup.com"} />
         </div>
       </section>
       <Footer />

@@ -2,12 +2,12 @@
 
 import { sendGAEvent } from "../lib/gtag";
 
-export function FooterEmail() {
+export function FooterEmail(props: {domain: string;}) {
   return (
     <a
       href="mailto:info@theblackspotgroup.com"
       onClick={() =>
-        sendGAEvent("contact_click", {
+        sendGAEvent("contact_click", props.domain, {
           type: "email",
           email: "info@theblackspotgroup.com",
         })
@@ -18,12 +18,12 @@ export function FooterEmail() {
   );
 }
 
-export function ContactPageEmail() {
+export function ContactPageEmail(props: {domain: string;}) {
   return (
     <a
       href="mailto:info@theblackspotgroup.com"
       onClick={() =>
-        sendGAEvent("contact_click", {
+        sendGAEvent("contact_click", props.domain, {
           type: "email",
           contact_info: "info@theblackspotgroup.com",
         })
@@ -36,12 +36,12 @@ export function ContactPageEmail() {
   );
 }
 
-export function ContactPageUKPhone() {
+export function ContactPageUKPhone(props: { domain: string; }) {
   return (
     <a
       href="tel:+447425068083"
       onClick={() =>
-        sendGAEvent("contact_click", {
+        sendGAEvent("contact_click", props.domain, {
           type: "phone_number",
           contact_info: "+44 7425 068083",
         })
@@ -52,12 +52,12 @@ export function ContactPageUKPhone() {
   );
 }
 
-export function ContactPageSAPhone(props: { isSaDomain: boolean }) {
+export function ContactPageSAPhone(props: { isSaDomain: boolean; domain: string; }) {
   return (
     <a
       href="tel:+27814278898"
       onClick={() =>
-        sendGAEvent("contact_click", {
+        sendGAEvent("contact_click", props.domain, {
           type: "phone_number",
           contact_info: "+27 81 427 8898",
         })

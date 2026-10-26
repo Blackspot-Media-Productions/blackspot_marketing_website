@@ -12,6 +12,7 @@ export const auditLink = (placement: string) =>
 
 export async function Header() {
   const mediaProdLink = await getMediaProdLink();
+  const { host } = await getDomain();
 
   return (
     <nav className="nav shell" aria-label="Main navigation">
@@ -21,7 +22,7 @@ export async function Header() {
           alt="Blackspot Media Production & Events"
         />
       </a>
-      <NavLinkWrapper mediaLink={mediaProdLink} />
+      <NavLinkWrapper mediaLink={mediaProdLink} domain={host || "theblackspotgroup.com"} />
     </nav>
   );
 }
@@ -137,7 +138,7 @@ export async function Footer() {
     <footer className="footer shell">
       <div className="footerLead">
         <p>Have a problem worth solving?</p>
-        <FooterBooking link={getLink()} />
+        <FooterBooking link={getLink()} domain={host || "theblackspotgroup.com"} />
       </div>
       <div className="footerGrid">
         <div className="footerLogo">
@@ -170,9 +171,9 @@ export async function Footer() {
           <a href="/about">About</a>
         </div>
         <div>
-          <FooterEmail />
+          <FooterEmail domain={host || "theblackspotgroup.com"} />
           <a href="/contact">Contact</a>
-          <FooterBtn />
+          <FooterBtn domain={host || "theblackspotgroup.com"} />
         </div>
       </div>
       <div className="footerBase">

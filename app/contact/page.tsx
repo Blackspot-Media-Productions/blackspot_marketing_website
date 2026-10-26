@@ -32,13 +32,13 @@ export default async function Contact() {
         intro="Tell us where the business is now, what is getting in the way and where you need to go. We’ll help make the next move clearer."
       />
       <section className="contactGrid shell">
-        <ContactPageEmail />
+        <ContactPageEmail domain={host || "theblackspotgroup.com"} />
         <div>
           <span>Call</span>
-          {!isSaDomain && <ContactPageUKPhone />}
+          {!isSaDomain && <ContactPageUKPhone domain={host || "theblackspotgroup.com"} />}
 
           {!isUkDomain && (
-            <ContactPageSAPhone isSaDomain={isSaDomain || false} />
+            <ContactPageSAPhone isSaDomain={isSaDomain || false} domain={host || "theblackspotgroup.com"} />
           )}
         </div>
         {!isSaDomain && (
@@ -78,7 +78,7 @@ export default async function Contact() {
             <br />
             <span>Brand & Digital Presence Audit.</span>
           </h2>
-          <ContactPage />
+          <ContactPage domain={host || "theblackspotgroup.com"} />
         </div>
       </section>
       <Footer />

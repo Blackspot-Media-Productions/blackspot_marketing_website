@@ -4,7 +4,7 @@ import { sendGAEvent } from "../lib/gtag";
 
 const auditLink = "https://audit.theblackspotgroup.com/";
 
-export function HomepageHero() {
+export function HomepageHero(props: { domain: string; }) {
   return (
     <a
       className="primaryCta"
@@ -12,7 +12,7 @@ export function HomepageHero() {
       target="_blank"
       referrerPolicy="no-referrer"
       onClick={() =>
-        sendGAEvent("audit_cta_click", { placement: "homepage_hero" })
+        sendGAEvent("audit_cta_click", props.domain, { placement: "homepage_hero" })
       }
     >
       Start with a free audit <span>↗</span>
@@ -20,7 +20,7 @@ export function HomepageHero() {
   );
 }
 
-export function HomepageAuditSection() {
+export function HomepageAuditSection(props: { domain: string; }) {
   return (
     <a
       className="darkCta"
@@ -28,7 +28,7 @@ export function HomepageAuditSection() {
       target="_blank"
       referrerPolicy="no-referrer"
       onClick={() =>
-        sendGAEvent("audit_cta_click", { placement: "homepage_audit_section" })
+        sendGAEvent("audit_cta_click", props.domain, { placement: "homepage_audit_section" })
       }
     >
       Audit my brand <span>↗</span>
@@ -36,20 +36,20 @@ export function HomepageAuditSection() {
   );
 }
 
-export function FooterBtn() {
+export function FooterBtn(props: { domain: string; }) {
   return (
     <a
       href={auditLink}
       target="_blank"
       referrerPolicy="no-referrer"
-      onClick={() => sendGAEvent("audit_cta_click", { placement: "footer" })}
+      onClick={() => sendGAEvent("audit_cta_click", props.domain, { placement: "footer" })}
     >
       Free brand audit
     </a>
   );
 }
 
-export function ServicesPage() {
+export function ServicesPage(props: { domain: string; }) {
   return (
     <a
       className="darkCta"
@@ -57,7 +57,7 @@ export function ServicesPage() {
       target="_blank"
       referrerPolicy="no-referrer"
       onClick={() =>
-        sendGAEvent("audit_cta_click", { placement: "services_page" })
+        sendGAEvent("audit_cta_click", props.domain, { placement: "services_page" })
       }
     >
       Get your free audit ↗
@@ -65,7 +65,7 @@ export function ServicesPage() {
   );
 }
 
-export function ContactPage() {
+export function ContactPage(props: { domain: string; }) {
   return (
     <a
       className="darkCta"
@@ -73,7 +73,7 @@ export function ContactPage() {
       target="_blank"
       referrerPolicy="no-referrer"
       onClick={() =>
-        sendGAEvent("audit_cta_click", { placement: "contact_page" })
+        sendGAEvent("audit_cta_click", props.domain, { placement: "contact_page" })
       }
     >
       Audit my brand ↗

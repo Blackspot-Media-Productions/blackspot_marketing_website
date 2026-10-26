@@ -8,7 +8,7 @@ const auditLink = (placement: string) =>
   // `https://audit.theblackspotgroup.com/?utm_source=website&utm_medium=referral&utm_campaign=brand_audit&utm_content=${placement}`;
   "https://audit.theblackspotgroup.com/";
 
-export default function NavLinkWrapper(props: { mediaLink: string }) {
+export default function NavLinkWrapper(props: { mediaLink: string; domain: string }) {
   const navWrapperRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -54,7 +54,7 @@ export default function NavLinkWrapper(props: { mediaLink: string }) {
           target="_blank"
           referrerPolicy="no-referrer"
           onClick={() =>
-            sendGAEvent("audit_cta_click", { placement: "header" })
+            sendGAEvent("audit_cta_click", props.domain, { placement: "header" })
           }
         >
           Get your free audit <span>↗</span>

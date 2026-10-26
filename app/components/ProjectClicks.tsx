@@ -3,12 +3,12 @@
 import { Project } from "../lib/types";
 import { sendGAEvent } from "../lib/gtag";
 
-export function HomePageProjects({ project: p }: { project: Project }) {
+export function HomePageProjects({ project: p, domain }: { project: Project; domain: string }) {
   return (
     <a
       href={`/work/${p.slug}`}
       onClick={() =>
-        sendGAEvent("project_click", {
+        sendGAEvent("project_click", domain, {
           project_name: p.title,
           placement: "homepage",
         })

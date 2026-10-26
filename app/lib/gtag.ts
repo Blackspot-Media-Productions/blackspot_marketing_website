@@ -31,13 +31,17 @@ const cleanParams = (params: Record<string, any>) => {
 
 export const sendGAEvent = (
   eventName: EventNames,
+  domain: string,
   params?: Record<string, any>,
 ) => {
   if (typeof window !== "undefined" && (window as any).gtag) {
     const safeParams = params ? cleanParams(params) : {};
-    (window as any).gtag("event", eventName, {
+    const gtagParams = {
       ...safeParams,
-      debug_mode: process.env.NEXT_PUBLIC_GA_DEBUG_MODE || false,
-    });
+      debug_mode: process.env.NEXT_PUBLIC_GA_DEBUG_MODE === "true",
+      domain: domain || "theblackspotgroup.com",
+    };
+
+    (window as any).gtag("event", eventName, gtagParams);
   }
 };

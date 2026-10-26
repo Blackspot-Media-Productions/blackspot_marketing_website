@@ -89,7 +89,7 @@ export default async function Home() {
               Blackspot helps ambitious businesses look sharper, communicate
               clearly and run more smoothly.
             </p>
-            <HomepageHero />
+            <HomepageHero domain={host || "theblackspotgroup.com"} />
           </div>
         </section>
 
@@ -156,7 +156,7 @@ export default async function Home() {
                     ))}
                   </div>
                 </div>
-                <HomepageServiceClicks sId={s.id} sName={s.title} />
+                <HomepageServiceClicks sId={s.id} sName={s.title} domain={host || "theblackspotgroup.com"} />
               </article>
             ))}
           </div>
@@ -192,7 +192,7 @@ export default async function Home() {
                 >
                   <span className="featured-indicator">Featured</span>
 
-                  <HomePageProjects project={p} />
+                  <HomePageProjects project={p} domain={host || "theblackspotgroup.com"} />
                 </article>
               ))}
             </div>
@@ -266,7 +266,7 @@ export default async function Home() {
                   first.
                 </p>
               </div>
-              <HomepageAuditSection />
+              <HomepageAuditSection domain={host || "theblackspotgroup.com"} />
             </div>
           </div>
         </section>

@@ -88,7 +88,7 @@ export function WorkSection({
               data-reveal
               style={{ display: isVisible ? "block" : "none" }}
               onClick={() =>
-                sendGAEvent("project_click", {
+                sendGAEvent("project_click", host || "theblackspotgroup.com", {
                   project_name: p.title,
                   placement: "workpage",
                 })
